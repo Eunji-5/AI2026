@@ -113,7 +113,7 @@
         <section class="relative">
             <div class="glass-card rounded-3xl p-3 sm:p-5 shadow-2xl overflow-hidden border border-slate-700/60 max-w-5xl mx-auto">
                 <div class="relative aspect-video rounded-2xl overflow-hidden bg-black flex items-center justify-center group shadow-inner">
-                    <!-- HTML5 Video Player with Local File Path -->
+                    <!-- HTML5 Video Player with Relative Path Fallback -->
                     <video 
                         id="mainVideo" 
                         controls 
@@ -121,29 +121,45 @@
                         playsinline 
                         poster="https://placehold.co/1280x720/0f172a/38bdf8?text=%EC%9D%80%EC%A7%80%EC%9D%98+%EC%9D%B4%EC%95%BC%EA%B8%B0+%EC%98%81%EC%83%81+%EC%8B%9C%EC%B2%AD" 
                         class="w-full h-full object-contain">
-                        <!-- Specified absolute local video source -->
-                        <source src="C:\Users\CSE029\Desktop\4일차-영상 만들기\storybook\11.mp4" type="video/mp4">
-                        <!-- Fallback URI encode -->
-                        <source src="file:///C:/Users/CSE029/Desktop/4일차-영상 만들기/storybook/11.mp4" type="video/mp4">
-                        사용하시는 브라우저가 비디오 태그를 지원하지 않거나 파일 경로(C:\Users\CSE029\Desktop\4일차-영상 만들기\storybook\11.mp4)를 읽을 수 없습니다.
+                        <!-- Relative path options for local/web servers -->
+                        <source src="./storybook2/11.mp4" type="video/mp4">
+                        <source src="11.mp4" type="video/mp4">
+                        사용하시는 브라우저의 보안 정책으로 로컬 파일 자동 재생이 차단되었습니다. 아래 '파일 직접 선택' 버튼을 이용해 주세요.
                     </video>
                 </div>
                 
-                <!-- Video Controls / File Path Info Note -->
-                <div class="mt-4 px-2 py-3 bg-slate-900/60 rounded-xl border border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-slate-400">
-                    <div class="flex items-center gap-2 overflow-hidden w-full sm:w-auto">
-                        <i class="fa-solid fa-folder-open text-sky-400 flex-shrink-0"></i>
-                        <span class="font-mono text-slate-300 truncate" title="C:\Users\CSE029\Desktop\4일차-영상 만들기\storybook\11.mp4">
-                            C:\Users\CSE029\Desktop\4일차-영상 만들기\storybook\11.mp4
-                        </span>
+                <!-- Video Controls / Local File Picker Fallback -->
+                <div class="mt-4 px-3 py-3 bg-slate-900/80 rounded-xl border border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-slate-300">
+                    <div class="flex flex-col gap-1 w-full sm:w-auto">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-triangle-exclamation text-amber-400 flex-shrink-0"></i>
+                            <span class="font-medium text-slate-200">영상이 표시되지 않나요?</span>
+                        </div>
+                        <p class="text-2xs text-slate-400 pl-5">브라우저 보안으로 절대경로(`C:\...`)가 차단된 경우, 아래 버튼을 통해 영상을 선택해주세요.</p>
                     </div>
-                    <div class="flex items-center gap-2 text-slate-400 text-2xs flex-shrink-0">
-                        <i class="fa-solid fa-circle-info text-sky-400"></i>
-                        <span>로컬 파일 재생은 로컬 브라우저 환경에서 지원됩니다.</span>
-                    </div>
+                    
+                    <!-- File input button -->
+                    <label for="videoFileInput" class="cursor-pointer inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-medium transition-colors shadow-md text-xs flex-shrink-0 self-stretch sm:self-auto justify-center">
+                        <i class="fa-solid fa-file-video"></i>
+                        <span>내 컴퓨터에서 영상 파일 선택하기</span>
+                        <input type="file" id="videoFileInput" accept="video/*" class="hidden">
+                    </label>
                 </div>
             </div>
         </section>
+
+        <!-- Script for Handling Local Video File Selection -->
+        <script>
+            document.getElementById('videoFileInput').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const videoPlayer = document.getElementById('mainVideo');
+                    const fileURL = URL.createObjectURL(file);
+                    videoPlayer.src = fileURL;
+                    videoPlayer.play();
+                }
+            });
+        </script>
 
         <!-- Narration Script Section (5 Scenes) -->
         <section class="space-y-6">
