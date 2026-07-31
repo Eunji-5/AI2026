@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>인공지능일반 포트폴리오 | 강은지</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -11,185 +12,722 @@
             theme: {
                 extend: {
                     colors: {
-                        brand: { 500: '#3b82f6', accent: '#8b5cf6' }
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            accent: '#8b5cf6'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Noto Sans KR', 'sans-serif']
                     }
                 }
             }
         }
     </script>
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
-        body { font-family: 'Noto Sans KR', sans-serif; transition: background-color 0.3s ease, color 0.3s ease; }
-        .glass-card { background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(226, 232, 240, 0.8); }
-        .dark .glass-card { background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); }
+        body { 
+            font-family: 'Noto Sans KR', sans-serif; 
+            transition: background-color 0.3s ease, color 0.3s ease; 
+        }
+        .glass-card { 
+            background: rgba(255, 255, 255, 0.8); 
+            backdrop-filter: blur(16px); 
+            border: 1px solid rgba(226, 232, 240, 0.8); 
+        }
+        .dark .glass-card { 
+            background: rgba(15, 23, 42, 0.75); 
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+        }
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+        }
+        .dark .glass-nav {
+            background: rgba(3, 7, 18, 0.85);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(156, 163, 175, 0.5);
+            border-radius: 9999px;
+        }
     </style>
 </head>
-<body class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100">
+<body class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 flex flex-col selection:bg-indigo-500 selection:text-white">
 
-    <header class="sticky top-0 z-40 w-full backdrop-blur-md bg-white/80 dark:bg-slate-950/80 border-b border-slate-200 dark:border-slate-800/60">
-        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-3 cursor-pointer" onclick="scrollToTop()">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-purple-500 flex items-center justify-center text-white shadow-lg shadow-blue-500/20">
-                    <i class="fa-solid fa-robot"></i>
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-40 w-full glass-nav border-b border-slate-200 dark:border-slate-800/80 transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3 cursor-pointer group" onclick="scrollToTop()">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-purple-500 flex items-center justify-center text-white shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-robot text-lg"></i>
                 </div>
                 <div>
-                    <h1 class="font-bold text-lg">인공지능일반 <span class="text-xs bg-indigo-500/20 text-indigo-500 dark:text-indigo-400 px-2 py-0.5 rounded-full font-semibold">포트폴리오</span></h1>
+                    <h1 class="font-bold text-lg tracking-tight flex items-center gap-2">
+                        인공지능일반 
+                        <span class="text-xs bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20 px-2 py-0.5 rounded-full font-semibold">
+                            포트폴리오
+                        </span>
+                    </h1>
                 </div>
             </div>
-            <button onclick="toggleTheme()" class="p-2 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-amber-400 w-9 h-9 flex items-center justify-center transition">
-                <i class="fa-solid fa-sun hidden dark:block"></i>
-                <i class="fa-solid fa-moon block dark:hidden"></i>
-            </button>
+
+            <!-- Header Menu & Actions -->
+            <div class="flex items-center gap-3">
+                <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600 dark:text-slate-300">
+                    <a href="#intro" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">소개</a>
+                    <a href="#portfolio-cards" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">탐구 과제</a>
+                    <a href="#roadmap" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">학습 로드맵</a>
+                </nav>
+                
+                <div class="h-4 w-[1px] bg-slate-200 dark:bg-slate-800 hidden md:block"></div>
+
+                <!-- Theme Toggle Button -->
+                <button onclick="toggleTheme()" aria-label="테마 변경" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 text-slate-700 dark:text-amber-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <i class="fa-solid fa-sun hidden dark:block text-amber-400 text-base"></i>
+                    <i class="fa-solid fa-moon block dark:hidden text-slate-700 text-base"></i>
+                </button>
+            </div>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 py-10 space-y-12">
-        <section id="intro" class="bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50 dark:from-slate-900 dark:via-indigo-950/50 dark:to-slate-900 p-8 md:p-12 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm">
-            <div class="flex items-center gap-4 mb-4">
-                <span class="text-5xl">😊</span>
-                <div>
-                    <h2 class="text-3xl font-extrabold tracking-tight">강은지 <span class="text-lg text-slate-500 dark:text-slate-400 font-medium">2학년</span></h2>
-                    <p class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold mt-1">인공지능일반 우수 탐구 포트폴리오</p>
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 space-y-12">
+        
+        <!-- Hero / Intro Section -->
+        <section id="intro" class="relative overflow-hidden bg-gradient-to-br from-indigo-50 via-purple-50/50 to-pink-50/30 dark:from-slate-900 dark:via-indigo-950/40 dark:to-slate-900 p-6 sm:p-10 md:p-12 rounded-3xl border border-slate-200/80 dark:border-slate-800/80 shadow-sm">
+            <div class="absolute -top-24 -right-24 w-72 h-72 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-8">
+                <div class="space-y-4 max-w-3xl">
+                    <div class="flex items-center gap-4">
+                        <span class="text-5xl select-none animate-bounce" style="animation-duration: 3s;">😊</span>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">강은지</h2>
+                                <span class="bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs px-2.5 py-1 rounded-md font-semibold">고등학교 2학년</span>
+                            </div>
+                            <p class="text-xs sm:text-sm text-indigo-600 dark:text-indigo-400 font-semibold mt-1 flex items-center gap-1.5">
+                                <i class="fa-solid fa-graduation-cap"></i> 컴퓨터공학과 진학 희망 | 인공지능일반 탐구 기록
+                            </p>
+                        </div>
+                    </div>
+
+                    <p class="text-slate-600 dark:text-slate-300 leading-relaxed text-base md:text-lg pt-2">
+                        안녕하세요! 컴퓨터공학과 진학을 꿈꾸는 2학년 강은지입니다. 이번 '인공지능일반' 수업을 통해 AI의 작동 원리, 데이터 분석, 그리고 따뜻한 기술 구현을 목표로 탐구를 시작합니다. 단순히 사용법을 익히는 것을 넘어, 우리 일상의 불편을 해결하는 앱을 직접 설계하고 올바른 AI 활용 윤리를 체득하는 과정들을 이 포트폴리오에 차곡차곡 담아보겠습니다!
+                    </p>
+
+                    <!-- Quick Stats -->
+                    <div class="pt-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <div class="bg-white/60 dark:bg-slate-900/60 backdrop-blur-sm p-3 rounded-xl border border-slate-200/50 dark:border-slate-800/50">
+                            <div class="text-xs text-slate-500 dark:text-slate-400">탐구 프로젝트</div>
+                            <div class="text-xl font-bold text-indigo-600 dark:text-indigo-400">8개 완료</div>
+                        </div>
+                        <div class="bg-white/60 dark:bg-slate-900/60 backdrop-blur-sm p-3 rounded-xl border border-slate-200/50 dark:border-slate-800/50">
+                            <div class="text-xs text-slate-500 dark:text-slate-400">학습 여정</div>
+                            <div class="text-xl font-bold text-purple-600 dark:text-purple-400">9일 집중 과정</div>
+                        </div>
+                        <div class="bg-white/60 dark:bg-slate-900/60 backdrop-blur-sm p-3 rounded-xl border border-slate-200/50 dark:border-slate-800/50">
+                            <div class="text-xs text-slate-500 dark:text-slate-400">핵심 역량</div>
+                            <div class="text-xl font-bold text-emerald-600 dark:text-emerald-400">AI & 데이터</div>
+                        </div>
+                        <div class="bg-white/60 dark:bg-slate-900/60 backdrop-blur-sm p-3 rounded-xl border border-slate-200/50 dark:border-slate-800/50">
+                            <div class="text-xs text-slate-500 dark:text-slate-400">포트폴리오 상태</div>
+                            <div class="text-xl font-bold text-teal-600 dark:text-teal-400">최신 업데이트</div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <p class="text-slate-600 dark:text-slate-300 max-w-4xl leading-relaxed text-base md:text-lg">
-                안녕하세요! 컴퓨터공학과 진학을 꿈꾸는 2학년 강은지입니다. 이번 '인공지능일반' 수업을 통해 AI의 작동 원리, 데이터 분석, 그리고 따뜻한 기술 구현을 목표로 탐구를 시작합니다. 단순히 사용법을 익히는 것을 넘어, 우리 일상의 불편을 해결하는 앱을 직접 설계하고 올바른 AI 활용 윤리를 체득하는 과정들을 이 포트폴리오에 차곡차곡 담아보겠습니다!
-            </p>
         </section>
 
+        <!-- Portfolio Cards Section -->
         <section id="portfolio-cards" class="space-y-6">
-            <h3 class="text-2xl font-bold tracking-tight flex items-center gap-2">
-                <i class="fa-solid fa-folder-open text-indigo-500"></i> 9일간의 핵심 탐구 과제
-            </h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-4">
+                <div>
+                    <h3 class="text-2xl font-bold tracking-tight flex items-center gap-2">
+                        <i class="fa-solid fa-folder-open text-indigo-500"></i> 주요 탐구 과제 카드
+                    </h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">인공지능일반 수업 동안 수행한 8가지 핵심 탐구 과제 목록입니다.</p>
+                </div>
+
+                <!-- Interactive Search & Category Filter -->
+                <div class="flex flex-wrap items-center gap-2">
+                    <div class="relative min-w-[200px]">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                        <input type="text" id="searchInput" oninput="filterCards()" placeholder="과제 검색..." class="w-full pl-8 pr-3 py-1.5 text-xs rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                    </div>
+                    <div class="flex gap-1 bg-slate-200/60 dark:bg-slate-800/60 p-1 rounded-xl text-xs font-medium">
+                        <button onclick="setCategory('all')" id="btn-all" class="category-btn active px-3 py-1 rounded-lg bg-white dark:bg-indigo-600 text-slate-900 dark:text-white shadow-sm transition">전체</button>
+                        <button onclick="setCategory('ai')" id="btn-ai" class="category-btn px-3 py-1 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition">AI & 윤리</button>
+                        <button onclick="setCategory('data')" id="btn-data" class="category-btn px-3 py-1 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition">데이터</button>
+                        <button onclick="setCategory('app')" id="btn-app" class="category-btn px-3 py-1 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition">앱 & 성찰</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cards 8 Grid -->
+            <div id="cardsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 
-                <!-- Card 1 -->
-                <div onclick="window.location.href='./notebooklm'" class="glass-card rounded-2xl p-6 hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer flex flex-col justify-between group border border-slate-200 dark:border-slate-800">
+                <!-- Card 1: 생성형 AI 활용 원칙 -->
+                <div data-category="ai" data-title="생성형 AI 활용 원칙" onclick="window.location.href='./notebooklm'" class="card-item glass-card rounded-2xl p-6 hover:shadow-xl hover:-translate-y-1.5 transition-all cursor-pointer flex flex-col justify-between group border border-slate-200 dark:border-slate-800/80">
                     <div>
-                        <div class="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-500 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-shield-halved"></i>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-500 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+                            <span class="text-[11px] font-semibold bg-blue-500/10 text-blue-600 dark:text-blue-400 px-2.5 py-0.5 rounded-full">AI & 윤리</span>
                         </div>
-                        <h4 class="text-lg font-bold mt-1 mb-2">생성형 AI 활용 원칙</h4>
+                        <h4 class="text-lg font-bold mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition">생성형 AI 활용 원칙</h4>
                         <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed line-clamp-3">할루시네이션 극복 방안 및 AI 윤리 가이드라인 수립.</p>
                     </div>
-                    <div class="mt-6 pt-4 border-t border-slate-200/60 dark:border-slate-800/60 flex items-center justify-between text-xs text-indigo-600 dark:text-indigo-400 font-medium">
+                    <div class="mt-6 pt-4 border-t border-slate-200/60 dark:border-slate-800/60 flex items-center justify-between text-xs text-indigo-600 dark:text-indigo-400 font-semibold">
                         <span>자세히 보기</span>
-                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1.5 transition-transform"></i>
                     </div>
                 </div>
 
-                <!-- Card 2 -->
-                <div onclick="window.location.href='./storybook2'" class="glass-card rounded-2xl p-6 hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer flex flex-col justify-between group border border-slate-200 dark:border-slate-800">
+                <!-- Card 2: AI 스토리와 영상 -->
+                <div data-category="ai" data-title="AI 스토리와 영상" onclick="window.location.href='./storybook2'" class="card-item glass-card rounded-2xl p-6 hover:shadow-xl hover:-translate-y-1.5 transition-all cursor-pointer flex flex-col justify-between group border border-slate-200 dark:border-slate-800/80">
                     <div>
-                        <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-500 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-clapperboard"></i>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-500 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-clapperboard"></i>
+                            </div>
+                            <span class="text-[11px] font-semibold bg-purple-500/10 text-purple-600 dark:text-purple-400 px-2.5 py-0.5 rounded-full">AI 콘텐츠</span>
                         </div>
-                        <h4 class="text-lg font-bold mt-1 mb-2">AI 스토리와 영상</h4>
+                        <h4 class="text-lg font-bold mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition">AI 스토리와 영상</h4>
                         <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed line-clamp-3">프롬프트 엔지니어링을 통한 스토리 영상 제작.</p>
                     </div>
-                    <div class="mt-6 pt-4 border-t border-slate-200/60 dark:border-slate-800/60 flex items-center justify-between text-xs text-indigo-600 dark:text-indigo-400 font-medium">
+                    <div class="mt-6 pt-4 border-t border-slate-200/60 dark:border-slate-800/60 flex items-center justify-between text-xs text-indigo-600 dark:text-indigo-400 font-semibold">
                         <span>자세히 보기</span>
-                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1.5 transition-transform"></i>
                     </div>
                 </div>
 
-                <!-- Card 3 -->
-                <div onclick="openModal('modal-3')" class="glass-card rounded-2xl p-6 hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer flex flex-col justify-between group border border-slate-200 dark:border-slate-800">
+                <!-- Card 3: 진로 데이터 분석 -->
+                <div data-category="data" data-title="진로 데이터 분석" onclick="window.location.href='./data1/index.html'" class="card-item glass-card rounded-2xl p-6 hover:shadow-xl hover:-translate-y-1.5 transition-all cursor-pointer flex flex-col justify-between group border border-slate-200 dark:border-slate-800/80">
                     <div>
-                        <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-chart-line"></i>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-chart-line"></i>
+                            </div>
+                            <span class="text-[11px] font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-2.5 py-0.5 rounded-full">데이터 분석</span>
                         </div>
-                        <h4 class="text-lg font-bold mt-1 mb-2">진로 데이터 분석</h4>
+                        <h4 class="text-lg font-bold mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition">진로 데이터 분석</h4>
+                        <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed line-clamp-3">관심 진로 분야 데이터 수집 및 시각화 분석.</p>
                     </div>
-                    <div class="mt-6 pt-4 border-t border-slate-200/60 dark:border-slate-800/60 flex items-center justify-between text-xs text-indigo-600 dark:text-indigo-400 font-medium">
+                    <div class="mt-6 pt-4 border-t border-slate-200/60 dark:border-slate-800/60 flex items-center justify-between text-xs text-indigo-600 dark:text-indigo-400 font-semibold">
                         <span>자세히 보기</span>
-                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1.5 transition-transform"></i>
                     </div>
                 </div>
 
-                <!-- Card 4 -->
-                <div onclick="openModal('modal-4')" class="glass-card rounded-2xl p-6 hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer flex flex-col justify-between group border border-slate-200 dark:border-slate-800">
+                <!-- Card 4: 나의 진로 리포트 -->
+                <div data-category="data" data-title="나의 진로 리포트" onclick="window.location.href='./data1'" class="card-item glass-card rounded-2xl p-6 hover:shadow-xl hover:-translate-y-1.5 transition-all cursor-pointer flex flex-col justify-between group border border-slate-200 dark:border-slate-800/80">
                     <div>
-                        <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-file-lines"></i>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-file-lines"></i>
+                            </div>
+                            <span class="text-[11px] font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 px-2.5 py-0.5 rounded-full">리포트</span>
                         </div>
-                        <h4 class="text-lg font-bold mt-1 mb-2">나의 진로 리포트</h4>
+                        <h4 class="text-lg font-bold mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition">나의 진로 리포트</h4>
+                        <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed line-clamp-3">데이터 분석을 바탕으로 작성한 맞춤형 진로 보고서.</p>
                     </div>
-                    <div class="mt-6 pt-4 border-t border-slate-200/60 dark:border-slate-800/60 flex items-center justify-between text-xs text-indigo-600 dark:text-indigo-400 font-medium">
+                    <div class="mt-6 pt-4 border-t border-slate-200/60 dark:border-slate-800/60 flex items-center justify-between text-xs text-indigo-600 dark:text-indigo-400 font-semibold">
                         <span>자세히 보기</span>
-                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1.5 transition-transform"></i>
                     </div>
                 </div>
 
-                <!-- Card 5 -->
-                <div onclick="openModal('modal-5')" class="glass-card rounded-2xl p-6 hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer flex flex-col justify-between group border border-slate-200 dark:border-slate-800">
+                <!-- Card 5: 지역 문제 데이터 분석 -->
+                <div data-category="data" data-title="지역 문제 데이터 분석" onclick="openModal('modal-5')" class="card-item glass-card rounded-2xl p-6 hover:shadow-xl hover:-translate-y-1.5 transition-all cursor-pointer flex flex-col justify-between group border border-slate-200 dark:border-slate-800/80">
                     <div>
-                        <div class="w-12 h-12 rounded-xl bg-rose-500/10 text-rose-500 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-map-location-dot"></i>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-rose-500/10 text-rose-500 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-map-location-dot"></i>
+                            </div>
+                            <span class="text-[11px] font-semibold bg-rose-500/10 text-rose-600 dark:text-rose-400 px-2.5 py-0.5 rounded-full">지역 문제</span>
                         </div>
-                        <h4 class="text-lg font-bold mt-1 mb-2">지역 문제 데이터 분석</h4>
+                        <h4 class="text-lg font-bold mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition">지역 문제 데이터 분석</h4>
+                        <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed line-clamp-3">우리 지역의 사회적 현안 및 데이터 기반 문제 정의.</p>
                     </div>
-                    <div class="mt-6 pt-4 border-t border-slate-200/60 dark:border-slate-800/60 flex items-center justify-between text-xs text-indigo-600 dark:text-indigo-400 font-medium">
+                    <div class="mt-6 pt-4 border-t border-slate-200/60 dark:border-slate-800/60 flex items-center justify-between text-xs text-indigo-600 dark:text-indigo-400 font-semibold">
                         <span>자세히 보기</span>
-                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1.5 transition-transform"></i>
                     </div>
                 </div>
 
-                <!-- Card 6 -->
-                <div onclick="openModal('modal-6')" class="glass-card rounded-2xl p-6 hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer flex flex-col justify-between group border border-slate-200 dark:border-slate-800">
+                <!-- Card 6: 학교 문제 해결 웹앱 -->
+                <div data-category="app" data-title="학교 문제 해결 웹앱" onclick="openModal('modal-6')" class="card-item glass-card rounded-2xl p-6 hover:shadow-xl hover:-translate-y-1.5 transition-all cursor-pointer flex flex-col justify-between group border border-slate-200 dark:border-slate-800/80">
                     <div>
-                        <div class="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-school"></i>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-school"></i>
+                            </div>
+                            <span class="text-[11px] font-semibold bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 px-2.5 py-0.5 rounded-full">웹 애플리케이션</span>
                         </div>
-                        <h4 class="text-lg font-bold mt-1 mb-2">학교 문제 해결 웹앱</h4>
+                        <h4 class="text-lg font-bold mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition">학교 문제 해결 웹앱</h4>
+                        <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed line-clamp-3">학교 생활의 불편함을 해소하기 위한 웹 애플리케이션 설계.</p>
                     </div>
-                    <div class="mt-6 pt-4 border-t border-slate-200/60 dark:border-slate-800/60 flex items-center justify-between text-xs text-indigo-600 dark:text-indigo-400 font-medium">
+                    <div class="mt-6 pt-4 border-t border-slate-200/60 dark:border-slate-800/60 flex items-center justify-between text-xs text-indigo-600 dark:text-indigo-400 font-semibold">
                         <span>자세히 보기</span>
-                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1.5 transition-transform"></i>
                     </div>
                 </div>
 
-                <!-- Card 7 -->
-                <div onclick="openModal('modal-7')" class="glass-card rounded-2xl p-6 hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer flex flex-col justify-between group border border-slate-200 dark:border-slate-800">
+                <!-- Card 7: 공공데이터 앱 -->
+                <div data-category="app" data-title="공공데이터 앱" onclick="openModal('modal-7')" class="card-item glass-card rounded-2xl p-6 hover:shadow-xl hover:-translate-y-1.5 transition-all cursor-pointer flex flex-col justify-between group border border-slate-200 dark:border-slate-800/80">
                     <div>
-                        <div class="w-12 h-12 rounded-xl bg-teal-500/10 text-teal-500 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-database"></i>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-teal-500/10 text-teal-500 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-database"></i>
+                            </div>
+                            <span class="text-[11px] font-semibold bg-teal-500/10 text-teal-600 dark:text-teal-400 px-2.5 py-0.5 rounded-full">Open API</span>
                         </div>
-                        <h4 class="text-lg font-bold mt-1 mb-2">공공데이터 앱</h4>
+                        <h4 class="text-lg font-bold mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition">공공데이터 앱</h4>
+                        <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed line-clamp-3">Open API와 공공데이터를 활용한 실용적 앱 구현.</p>
                     </div>
-                    <div class="mt-6 pt-4 border-t border-slate-200/60 dark:border-slate-800/60 flex items-center justify-between text-xs text-indigo-600 dark:text-indigo-400 font-medium">
+                    <div class="mt-6 pt-4 border-t border-slate-200/60 dark:border-slate-800/60 flex items-center justify-between text-xs text-indigo-600 dark:text-indigo-400 font-semibold">
                         <span>자세히 보기</span>
-                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1.5 transition-transform"></i>
                     </div>
                 </div>
 
-                <!-- Card 8 -->
-                <div onclick="openModal('modal-8')" class="glass-card rounded-2xl p-6 hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer flex flex-col justify-between group border border-slate-200 dark:border-slate-800">
+                <!-- Card 8: 최종 성찰 내용 -->
+                <div data-category="app" data-title="최종 성찰 내용" onclick="openModal('modal-8')" class="card-item glass-card rounded-2xl p-6 hover:shadow-xl hover:-translate-y-1.5 transition-all cursor-pointer flex flex-col justify-between group border border-slate-200 dark:border-slate-800/80">
                     <div>
-                        <div class="w-12 h-12 rounded-xl bg-cyan-500/10 text-cyan-500 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-award"></i>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-cyan-500/10 text-cyan-500 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-award"></i>
+                            </div>
+                            <span class="text-[11px] font-semibold bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 px-2.5 py-0.5 rounded-full">성찰</span>
                         </div>
-                        <h4 class="text-lg font-bold mt-1 mb-2">최종 성찰 내용</h4>
+                        <h4 class="text-lg font-bold mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition">최종 성찰 내용</h4>
+                        <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed line-clamp-3">인공지능일반 탐구 과정을 되돌아보며 얻은 성장과 소감.</p>
                     </div>
-                    <div class="mt-6 pt-4 border-t border-slate-200/60 dark:border-slate-800/60 flex items-center justify-between text-xs text-indigo-600 dark:text-indigo-400 font-medium">
+                    <div class="mt-6 pt-4 border-t border-slate-200/60 dark:border-slate-800/60 flex items-center justify-between text-xs text-indigo-600 dark:text-indigo-400 font-semibold">
                         <span>자세히 보기</span>
-                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1.5 transition-transform"></i>
                     </div>
+                </div>
+
+            </div>
+            
+            <!-- Empty Search State -->
+            <div id="noResults" class="hidden text-center py-12 glass-card rounded-2xl">
+                <i class="fa-solid fa-magnifying-glass text-4xl text-slate-400 mb-3"></i>
+                <p class="text-slate-600 dark:text-slate-400 text-sm">검색 결과가 없습니다. 다른 검색어를 입력해 보세요.</p>
+            </div>
+        </section>
+
+        <!-- 9-Day Roadmap Timeline Section -->
+        <section id="roadmap" class="space-y-6 pt-6">
+            <div class="border-b border-slate-200 dark:border-slate-800 pb-4">
+                <h3 class="text-2xl font-bold tracking-tight flex items-center gap-2">
+                    <i class="fa-solid fa-timeline text-purple-500"></i> 9일간의 탐구 여정 로드맵
+                </h3>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">인공지능일반 수업을 통해 진행된 일자별 체계적 학습 일지입니다.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="glass-card p-5 rounded-2xl space-y-2 border-l-4 border-l-blue-500">
+                    <div class="flex justify-between text-xs font-semibold text-blue-600 dark:text-blue-400">
+                        <span>STEP 01</span>
+                        <span>1~3일차</span>
+                    </div>
+                    <h5 class="font-bold text-base">생성형 AI 기초 & 윤리</h5>
+                    <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                        할루시네이션 개념 이해, 윤리적 활용 가이드라인 작성, 프롬프트 엔지니어링 실습 및 영상 스토리보드 제작.
+                    </p>
+                </div>
+
+                <div class="glass-card p-5 rounded-2xl space-y-2 border-l-4 border-l-emerald-500">
+                    <div class="flex justify-between text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+                        <span>STEP 02</span>
+                        <span>4~6일차</span>
+                    </div>
+                    <h5 class="font-bold text-base">진로 및 지역 데이터 분석</h5>
+                    <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                        컴퓨터공학과 관련 공공 데이터 탐색, 데이터 정제 및 시각화, 지역 문제 정의 및 분석 리포트 작성.
+                    </p>
+                </div>
+
+                <div class="glass-card p-5 rounded-2xl space-y-2 border-l-4 border-l-indigo-500">
+                    <div class="flex justify-between text-xs font-semibold text-indigo-600 dark:text-indigo-400">
+                        <span>STEP 03</span>
+                        <span>7~9일차</span>
+                    </div>
+                    <h5 class="font-bold text-base">문제 해결 웹앱 & 최종 성찰</h5>
+                    <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                        학교 생활 문제 해결용 웹앱 프로토타입 구현, Open API 연동, 전체 포트폴리오 정리 및 성찰.
+                    </p>
                 </div>
             </div>
         </section>
+
     </main>
 
+    <!-- Detail Modals for Cards 4 ~ 8 -->
+
+    <!-- Modal 4: 나의 진로 리포트 -->
+    <div id="modal-4" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/70 backdrop-blur-md p-4 transition-opacity">
+        <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-xl w-full p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-6 relative overflow-hidden">
+            <div class="flex justify-between items-start">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center text-lg font-bold">
+                        <i class="fa-solid fa-file-lines"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold">나의 진로 리포트</h3>
+                        <p class="text-xs text-amber-600 dark:text-amber-400 font-semibold">데이터 기반 진로 설계 탐구</p>
+                    </div>
+                </div>
+                <button onclick="closeModal('modal-4')" aria-label="닫기" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-white flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="space-y-3 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                <div class="p-4 rounded-2xl bg-amber-500/5 border border-amber-500/20 space-y-2">
+                    <h6 class="font-bold text-slate-800 dark:text-slate-100 text-xs text-amber-600 dark:text-amber-400 uppercase tracking-wider">주요 탐구 요약</h6>
+                    <p class="text-xs">
+                        컴퓨터공학과 진학 목표와 연계하여 AI 및 소프트웨어 분야의 최근 인재 수요 데이터를 수집하고 분석하였습니다. 기술 변화에 적응하는 개발자의 핵심 역량을 도출하였습니다.
+                    </p>
+                </div>
+                <ul class="space-y-2 text-xs">
+                    <li class="flex items-start gap-2">
+                        <i class="fa-solid fa-check text-amber-500 mt-0.5"></i>
+                        <span><strong>목표 직무:</strong> AI 소프트웨어 엔지니어 / 데이터 분석가</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i class="fa-solid fa-check text-amber-500 mt-0.5"></i>
+                        <span><strong>핵심 역량:</strong> Python, 데이터 분석, 알고리즘, AI 윤리 의식</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i class="fa-solid fa-check text-amber-500 mt-0.5"></i>
+                        <span><strong>향후 실행 계획:</strong> 인공지능 관련 동아리 활동 지속 및 공공데이터 프로젝트 참여</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="flex justify-end pt-2">
+                <button onclick="closeModal('modal-4')" class="px-5 py-2.5 bg-amber-600 hover:bg-amber-500 text-white rounded-xl text-xs font-semibold transition">닫기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 5: 지역 문제 데이터 분석 -->
+    <div id="modal-5" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/70 backdrop-blur-md p-4 transition-opacity">
+        <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-xl w-full p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-6">
+            <div class="flex justify-between items-start">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-500 flex items-center justify-center text-lg font-bold">
+                        <i class="fa-solid fa-map-location-dot"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold">지역 문제 데이터 분석</h3>
+                        <p class="text-xs text-rose-600 dark:text-rose-400 font-semibold">우리 동네 사회적 현안 탐구</p>
+                    </div>
+                </div>
+                <button onclick="closeModal('modal-5')" aria-label="닫기" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-white flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="space-y-3 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                <div class="p-4 rounded-2xl bg-rose-500/5 border border-rose-500/20 space-y-2">
+                    <h6 class="font-bold text-slate-800 dark:text-slate-100 text-xs text-rose-600 dark:text-rose-400 uppercase tracking-wider">주요 탐구 내용</h6>
+                    <p class="text-xs">
+                        지역 공공데이터(교통, 스쿨존 안전, 쓰레기 무단투기 등)를 수집하여 데이터 기반 문제 정의를 수행했습니다. 문제 발생 빈도와 시간대별 특성을 분석하여 시각화했습니다.
+                    </p>
+                </div>
+                <ul class="space-y-2 text-xs">
+                    <li class="flex items-start gap-2">
+                        <i class="fa-solid fa-circle-dot text-rose-500 mt-0.5"></i>
+                        <span><strong>분석 주제:</strong> 보행자 안전을 위한 스쿨존 사고 위험 지역 분석</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i class="fa-solid fa-circle-dot text-rose-500 mt-0.5"></i>
+                        <span><strong>도출 인사이트:</strong> 하교 시간대(15시~17시) 및 신호등 없는 교차로의 위험도 측정</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="flex justify-end pt-2">
+                <button onclick="closeModal('modal-5')" class="px-5 py-2.5 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-semibold transition">닫기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 6: 학교 문제 해결 웹앱 -->
+    <div id="modal-6" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/70 backdrop-blur-md p-4 transition-opacity">
+        <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-xl w-full p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-6">
+            <div class="flex justify-between items-start">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center text-lg font-bold">
+                        <i class="fa-solid fa-school"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold">학교 문제 해결 웹앱</h3>
+                        <p class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold">따뜻한 학교 생활 보조 솔루션</p>
+                    </div>
+                </div>
+                <button onclick="closeModal('modal-6')" aria-label="닫기" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-white flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="space-y-3 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                <div class="p-4 rounded-2xl bg-indigo-500/5 border border-indigo-500/20 space-y-2">
+                    <h6 class="font-bold text-slate-800 dark:text-slate-100 text-xs text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">프로젝트 개요</h6>
+                    <p class="text-xs">
+                        학생들이 매일 겪는 급식 메뉴 확인, 이동수업실 위치 찾기, 분실물 찾기의 불편함을 해결하기 위해 인터랙티브 웹 앱 UI 및 로직을 설계했습니다.
+                    </p>
+                </div>
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                    <div class="p-3 bg-slate-100 dark:bg-slate-800/60 rounded-xl">
+                        <div class="font-semibold text-indigo-500">주요 기능</div>
+                        <div class="text-slate-500 dark:text-slate-400 mt-1">오늘의 급식 영양 분석 & 실시간 학생 의견 공유</div>
+                    </div>
+                    <div class="p-3 bg-slate-100 dark:bg-slate-800/60 rounded-xl">
+                        <div class="font-semibold text-indigo-500">기술 스택</div>
+                        <div class="text-slate-500 dark:text-slate-400 mt-1">HTML5, Tailwind CSS, JavaScript</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-end pt-2">
+                <button onclick="closeModal('modal-6')" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold transition">닫기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 7: 공공데이터 앱 -->
+    <div id="modal-7" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/70 backdrop-blur-md p-4 transition-opacity">
+        <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-xl w-full p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-6">
+            <div class="flex justify-between items-start">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-teal-500/10 text-teal-500 flex items-center justify-center text-lg font-bold">
+                        <i class="fa-solid fa-database"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold">공공데이터 앱</h3>
+                        <p class="text-xs text-teal-600 dark:text-teal-400 font-semibold">Open API 실시간 데이터 연동</p>
+                    </div>
+                </div>
+                <button onclick="closeModal('modal-7')" aria-label="닫기" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-white flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="space-y-3 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                <div class="p-4 rounded-2xl bg-teal-500/5 border border-teal-500/20 space-y-2">
+                    <h6 class="font-bold text-slate-800 dark:text-slate-100 text-xs text-teal-600 dark:text-teal-400 uppercase tracking-wider">주요 연동 기능</h6>
+                    <p class="text-xs">
+                        공공데이터 포털의 Open API를 연결하여 실시간 미세먼지 농도 및 날씨 수치를 조회하고, 사용자 위치 기반 공공시설 정보를 제공하는 대시보드를 구현했습니다.
+                    </p>
+                </div>
+                <ul class="space-y-2 text-xs">
+                    <li class="flex items-start gap-2">
+                        <i class="fa-solid fa-code text-teal-500 mt-0.5"></i>
+                        <span>Fetch API를 활용한 JSON 데이터 파싱 및 실시간 화면 업데이트</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i class="fa-solid fa-code text-teal-500 mt-0.5"></i>
+                        <span>데이터 예외 처리 및 사용자 친화적 UI 상태 표시 구현</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="flex justify-end pt-2">
+                <button onclick="closeModal('modal-7')" class="px-5 py-2.5 bg-teal-600 hover:bg-teal-500 text-white rounded-xl text-xs font-semibold transition">닫기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 8: 최종 성찰 내용 -->
+    <div id="modal-8" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/70 backdrop-blur-md p-4 transition-opacity">
+        <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-xl w-full p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-6">
+            <div class="flex justify-between items-start">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-500 flex items-center justify-center text-lg font-bold">
+                        <i class="fa-solid fa-award"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold">최종 성찰 내용</h3>
+                        <p class="text-xs text-cyan-600 dark:text-cyan-400 font-semibold">인공지능일반 탐구를 마치며</p>
+                    </div>
+                </div>
+                <button onclick="closeModal('modal-8')" aria-label="닫기" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-white flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="space-y-3 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                <p class="text-xs leading-relaxed bg-cyan-500/5 p-4 rounded-2xl border border-cyan-500/20">
+                    "이번 탐구 과정을 거치며 단순한 AI 도구 사용자를 넘어, 기술이 사회에 가져올 영향과 책임감에 대해 깊이 고민하게 되었습니다. 데이터를 통해 문제를 발견하고 앱으로 구현해보며 컴퓨터공학도로서의 비전이 더욱 명확해졌습니다."
+                </p>
+                <div class="space-y-1.5 text-xs">
+                    <div class="font-semibold text-slate-800 dark:text-slate-100">💡 스스로 성장한 점</div>
+                    <ul class="list-disc list-inside space-y-1 text-slate-500 dark:text-slate-400 pl-1">
+                        <li>생성형 AI의 환각(Hallucination) 현상 이해 및 교차 검증 습관 체득</li>
+                        <li>데이터 수집-정제-분석-시각화의 전 과정을 경험하며 리포트 작성 역량 강화</li>
+                        <li>사용자 관점에서 출발하는 따뜻한 소프트웨어 설계 접근법 체득</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="flex justify-end pt-2">
+                <button onclick="closeModal('modal-8')" class="px-5 py-2.5 bg-cyan-600 hover:bg-cyan-500 text-white rounded-xl text-xs font-semibold transition">닫기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-auto border-t border-slate-200 dark:border-slate-800/80 bg-white/50 dark:bg-slate-950/50 backdrop-blur-sm py-8 text-xs text-slate-500 dark:text-slate-400">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded-lg bg-indigo-600 flex items-center justify-center text-white text-xs">
+                    <i class="fa-solid fa-robot"></i>
+                </div>
+                <span class="font-semibold text-slate-700 dark:text-slate-300">인공지능일반 탐구 포트폴리오</span>
+                <span>|</span>
+                <span>작성자: 강은지 (2학년)</span>
+            </div>
+            <div>
+                &copy; 인공지능일반 Portfolio. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
     <script>
-        function toggleTheme() { document.documentElement.classList.toggle('dark'); }
-        function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+        // Toggle Dark Mode Function
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+            const isDark = document.documentElement.classList.contains('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+
+        // Initialize Theme from LocalStorage or System Preference
+        (function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                document.documentElement.classList.remove('dark');
+            } else {
+                document.documentElement.classList.add('dark');
+            }
+        })();
+
+        // Scroll to Top Helper
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Modal Handlers
         function openModal(modalId) {
             const modal = document.getElementById(modalId);
-            if(modal) { modal.classList.remove('hidden'); modal.classList.add('flex'); }
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                document.body.style.overflow = 'hidden';
+            }
         }
+
         function closeModal(modalId) {
             const modal = document.getElementById(modalId);
-            if(modal) { modal.classList.remove('flex'); modal.classList.add('hidden'); }
+            if (modal) {
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Close Modal when clicking outside the box
+        window.addEventListener('click', function(event) {
+            const modals = ['modal-4', 'modal-5', 'modal-6', 'modal-7', 'modal-8'];
+            modals.forEach(id => {
+                const modal = document.getElementById(id);
+                if (modal && event.target === modal) {
+                    closeModal(id);
+                }
+            });
+        });
+
+        // Close Modal on Escape key
+        window.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const modals = ['modal-4', 'modal-5', 'modal-6', 'modal-7', 'modal-8'];
+                modals.forEach(id => closeModal(id));
+            }
+        });
+
+        // Category Filter Logic
+        let currentCategory = 'all';
+
+        function setCategory(category) {
+            currentCategory = category;
+            
+            // Update active button state
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('bg-white', 'dark:bg-indigo-600', 'text-slate-900', 'dark:text-white', 'shadow-sm');
+                btn.classList.add('text-slate-600', 'dark:text-slate-400');
+            });
+
+            const activeBtn = document.getElementById('btn-' + category);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-white', 'dark:bg-indigo-600', 'text-slate-900', 'dark:text-white', 'shadow-sm');
+                activeBtn.classList.remove('text-slate-600', 'dark:text-slate-400');
+            }
+
+            filterCards();
+        }
+
+        // Live Search and Filter Execution
+        function filterCards() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase().trim();
+            const cards = document.querySelectorAll('.card-item');
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const category = card.getAttribute('data-category');
+                const title = card.getAttribute('data-title').toLowerCase();
+                const textContent = card.innerText.toLowerCase();
+
+                const matchesCategory = (currentCategory === 'all' || category === currentCategory);
+                const matchesSearch = title.includes(searchInput) || textContent.includes(searchInput);
+
+                if (matchesCategory && matchesSearch) {
+                    card.style.display = 'flex';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            const noResults = document.getElementById('noResults');
+            if (visibleCount === 0) {
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+            }
         }
     </script>
 </body>
