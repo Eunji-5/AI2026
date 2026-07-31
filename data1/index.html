@@ -116,9 +116,72 @@
         ::-webkit-scrollbar-track { background: #0b1329; }
         ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #3b82f6; }
+
+        /* Light Mode Styles */
+        body.light-mode {
+            background-color: #f8fafc;
+            color: #0f172a;
+        }
+        body.light-mode header {
+            background: linear-gradient(to bottom, #ffffff, #f1f5f9);
+            border-bottom-color: #cbd5e1;
+        }
+        body.light-mode header h1 {
+            color: #0f172a;
+        }
+        body.light-mode header p {
+            color: #475569;
+        }
+        body.light-mode .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid #e2e8f0;
+            color: #0f172a;
+            box-shadow: 0 4px 15px -2px rgba(0, 0, 0, 0.05);
+        }
+        body.light-mode .glass-card:hover {
+            border-color: rgba(59, 130, 246, 0.5);
+            box-shadow: 0 12px 25px -5px rgba(59, 130, 246, 0.15);
+        }
+        body.light-mode .text-slate-100,
+        body.light-mode .text-slate-200,
+        body.light-mode .text-white {
+            color: #0f172a !important;
+        }
+        body.light-mode .text-slate-300 {
+            color: #334155 !important;
+        }
+        body.light-mode .text-slate-400 {
+            color: #64748b !important;
+        }
+        body.light-mode .bg-slate-900,
+        body.light-mode .bg-slate-900\/90,
+        body.light-mode .bg-slate-900\/80,
+        body.light-mode .bg-slate-900\/70,
+        body.light-mode .bg-slate-900\/60,
+        body.light-mode .bg-slate-950 {
+            background-color: #ffffff !important;
+            border-color: #e2e8f0 !important;
+        }
+        body.light-mode .bg-slate-800\/60,
+        body.light-mode .bg-slate-800\/50,
+        body.light-mode .bg-slate-800\/80,
+        body.light-mode .bg-slate-800\/90,
+        body.light-mode .bg-slate-800 {
+            background-color: #f1f5f9 !important;
+            border-color: #cbd5e1 !important;
+        }
+        body.light-mode table thead {
+            background-color: #e2e8f0 !important;
+            color: #334155 !important;
+        }
+        body.light-mode table tbody td {
+            color: #334155 !important;
+        }
+        body.light-mode ::-webkit-scrollbar-track { background: #f1f5f9; }
+        body.light-mode ::-webkit-scrollbar-thumb { background: #cbd5e1; }
     </style>
 </head>
-<body class="min-h-screen text-slate-100 antialiased selection:bg-blue-500 selection:text-white">
+<body class="min-h-screen text-slate-100 antialiased selection:bg-blue-500 selection:text-white transition-colors duration-300">
 
     <!-- Header Section -->
     <header class="relative overflow-hidden border-b border-slate-800 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-900/90 pt-10 pb-12 px-4 sm:px-6">
@@ -140,8 +203,15 @@
                         <i class="fa-solid fa-circle-check text-emerald-400"></i> 최종 확정본
                     </span>
                 </div>
-                <div class="text-xs text-slate-400 flex items-center gap-2">
-                    <i class="fa-regular fa-clock"></i> 작성일: 2026년 7월 31일 (2025년 기준)
+                <div class="flex items-center gap-3">
+                    <div class="text-xs text-slate-400 flex items-center gap-2">
+                        <i class="fa-regular fa-clock"></i> 작성일: 2026년 7월 31일 (2025년 기준)
+                    </div>
+                    <!-- Theme Toggle Button -->
+                    <button id="theme-toggle-btn" onclick="toggleTheme()" class="ripple-btn inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-800/90 text-slate-200 hover:bg-slate-700 hover:text-white border border-slate-700/80 shadow-md transition-all duration-200 cursor-pointer">
+                        <i id="theme-icon" class="fa-solid fa-sun text-amber-400"></i>
+                        <span id="theme-text">라이트 모드</span>
+                    </button>
                 </div>
             </div>
 
@@ -579,6 +649,54 @@
 
     <!-- JavaScript Logic -->
     <script>
+        // Global Chart Instances
+        let chartRegion = null;
+        let chartStatus = null;
+        let chartBusanComp = null;
+
+        // Theme Toggle Function
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+            const themeBtn = document.getElementById('theme-toggle-btn');
+
+            body.classList.toggle('light-mode');
+            const isLight = body.classList.contains('light-mode');
+
+            if (isLight) {
+                themeIcon.className = "fa-solid fa-moon text-indigo-600";
+                themeText.textContent = "다크 모드";
+                themeBtn.className = "ripple-btn inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold bg-white text-slate-800 hover:bg-slate-100 border border-slate-300 shadow-md transition-all duration-200 cursor-pointer";
+                updateChartThemes('#475569', 'rgba(0,0,0,0.06)', '#334155');
+            } else {
+                themeIcon.className = "fa-solid fa-sun text-amber-400";
+                themeText.textContent = "라이트 모드";
+                themeBtn.className = "ripple-btn inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-800/90 text-slate-200 hover:bg-slate-700 hover:text-white border border-slate-700/80 shadow-md transition-all duration-200 cursor-pointer";
+                updateChartThemes('#94a3b8', 'rgba(255,255,255,0.06)', '#cbd5e1');
+            }
+        }
+
+        function updateChartThemes(tickColor, gridColor, labelColor) {
+            if (chartRegion) {
+                chartRegion.options.scales.y.ticks.color = tickColor;
+                chartRegion.options.scales.y.grid.color = gridColor;
+                chartRegion.options.scales.x.ticks.color = tickColor;
+                chartRegion.update();
+            }
+            if (chartStatus) {
+                chartStatus.options.plugins.legend.labels.color = labelColor;
+                chartStatus.update();
+            }
+            if (chartBusanComp) {
+                chartBusanComp.options.scales.y.ticks.color = tickColor;
+                chartBusanComp.options.scales.y.grid.color = gridColor;
+                chartBusanComp.options.scales.x.ticks.color = tickColor;
+                chartBusanComp.options.plugins.legend.labels.color = labelColor;
+                chartBusanComp.update();
+            }
+        }
+
         // Ranking Data for Tabs
         const rankData = {
             rates: [
@@ -713,7 +831,7 @@
 
             // 1. Regional Bar Chart
             const ctx1 = document.getElementById('regionChart').getContext('2d');
-            new Chart(ctx1, {
+            chartRegion = new Chart(ctx1, {
                 type: 'bar',
                 data: {
                     labels: ['서울', '경기', '부산', '충남', '경북', '대전', '경남', '기타'],
@@ -738,7 +856,7 @@
 
             // 2. Status Doughnut Chart
             const ctx2 = document.getElementById('statusChart').getContext('2d');
-            new Chart(ctx2, {
+            chartStatus = new Chart(ctx2, {
                 type: 'doughnut',
                 data: {
                     labels: ['기존 학과', '변경 학과', '신설 학과'],
@@ -763,7 +881,7 @@
 
             // 3. Busan Group Comparison Bar Chart
             const ctx3 = document.getElementById('busanCompChart').getContext('2d');
-            new Chart(ctx3, {
+            chartBusanComp = new Chart(ctx3, {
                 type: 'bar',
                 data: {
                     labels: ['입학정원(명)', '재학생(10명)', '경쟁률(x10)', '취업률(%)', '교육비(백만원)'],
