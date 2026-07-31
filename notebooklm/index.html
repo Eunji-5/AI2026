@@ -1,41 +1,97 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI 탐정단 가이드: 슬기로운 AI 탐구 생활</title>
-    <!-- Tailwind CSS CDN -->
+    
+    <!-- Tailwind CSS CDN with dark mode config -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        gaegu: ['Gaegu', 'cursive']
+                    }
+                }
+            }
+        }
+    </script>
+    
     <!-- FontAwesome Icons CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts Inter & Gaegu for Detective Theme -->
     <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
-        body { font-family: 'Inter', sans-serif; }
+        body { font-family: 'Inter', sans-serif; transition: background-color 0.3s ease, color 0.3s ease; }
         .font-gaegu { font-family: 'Gaegu', cursive; }
+        
         .tab-btn.active {
-            background-color: #1e293b;
+            background-color: #2563eb;
             color: #ffffff;
             border-color: #3b82f6;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
         }
+        
+        /* Print Styles */
         @media print {
             body * { visibility: hidden; }
             #printable-certificate, #printable-certificate * { visibility: visible; }
-            #printable-certificate { position: absolute; left: 0; top: 0; width: 100%; }
+            #printable-certificate { 
+                position: absolute; 
+                left: 0; 
+                top: 0; 
+                width: 100%; 
+                background-color: #ffffff !important;
+                color: #0f172a !important;
+                border-color: #f59e0b !important;
+            }
+        }
+
+        /* Toast notification transition */
+        #toast-notification {
+            transition: opacity 0.3s ease, transform 0.3s ease;
         }
     </style>
 </head>
-<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col antialiased">
+<body class="bg-slate-100 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
 
-    <header class="bg-slate-900 text-white sticky top-0 z-40 shadow-md">
+    <!-- Notification Toast System (Replacing alert for seamless UI) -->
+    <div id="toast-notification" class="fixed bottom-6 right-6 z-50 opacity-0 pointer-events-none transform translate-y-4 bg-slate-900 text-amber-400 border border-amber-500/30 font-semibold px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 text-xs sm:text-sm backdrop-blur-md">
+        <i class="fa-solid fa-bell text-amber-400 text-base"></i>
+        <span id="toast-message">알림 메세지</span>
+    </div>
+
+    <header class="bg-slate-900 dark:bg-slate-900 text-white sticky top-0 z-40 shadow-md border-b border-slate-800">
         <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
             <div class="flex items-center space-x-3">
                 <!-- Home Button requested by user -->
-                <a href="../index.html" class="inline-flex items-center gap-2 px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold rounded-xl text-xs sm:text-sm transition shadow-sm">
+                <a href="../index.html" class="inline-flex items-center gap-2 px-3.5 py-1.5 bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold rounded-xl text-xs sm:text-sm transition shadow-sm active:scale-95">
                     <i class="fa-solid fa-house"></i>
                     <span>홈으로</span>
                 </a>
-                <span class="text-slate-500">|</span>
+                <span class="text-slate-600">|</span>
+
+                <!-- Dark / Light Mode Toggle Button -->
+                <button onclick="toggleTheme()" id="theme-toggle-btn" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-amber-400 font-bold rounded-xl text-xs sm:text-sm transition border border-slate-700 active:scale-95">
+                    <i class="fa-solid fa-moon text-amber-400" id="theme-icon"></i>
+                    <span id="theme-text" class="text-slate-200">다크 모드</span>
+                </button>
+                <span class="text-slate-600">|</span>
+
                 <div class="flex items-center gap-2">
                     <i class="fa-solid fa-magnifying-glass text-amber-400 text-lg"></i>
                     <h1 class="font-extrabold text-base sm:text-lg tracking-tight">AI 탐정단 가이드</h1>
@@ -44,14 +100,14 @@
 
             <!-- Main Tab Navigation Buttons -->
             <nav class="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-semibold overflow-x-auto">
-                <button id="nav-cases" onclick="switchTab('cases')" class="tab-btn active px-3 py-1.5 rounded-xl border border-slate-700 hover:bg-slate-800 transition whitespace-nowrap">
-                    <i class="fa-solid fa-shield-halved mr-1 text-amber-400"></i>4대 위험 사건
+                <button id="nav-cases" onclick="switchTab('cases')" class="tab-btn active px-3.5 py-1.5 rounded-xl border border-slate-700 hover:bg-slate-800 transition whitespace-nowrap">
+                    <i class="fa-solid fa-shield-halved mr-1.5 text-amber-400"></i>4대 위험 사건
                 </button>
-                <button id="nav-tools" onclick="switchTab('tools')" class="tab-btn px-3 py-1.5 rounded-xl border border-slate-700 hover:bg-slate-800 transition whitespace-nowrap">
-                    <i class="fa-solid fa-quote-right mr-1 text-sky-400"></i>출처 생성기 & 퀴즈
+                <button id="nav-tools" onclick="switchTab('tools')" class="tab-btn px-3.5 py-1.5 rounded-xl border border-slate-700 hover:bg-slate-800 transition whitespace-nowrap">
+                    <i class="fa-solid fa-quote-right mr-1.5 text-sky-400"></i>출처 생성기 & 퀴즈
                 </button>
-                <button id="nav-rules" onclick="switchTab('rules')" class="tab-btn px-3 py-1.5 rounded-xl border border-slate-700 hover:bg-slate-800 transition whitespace-nowrap">
-                    <i class="fa-solid fa-award mr-1 text-emerald-400"></i>5대 수칙 & 증명서
+                <button id="nav-rules" onclick="switchTab('rules')" class="tab-btn px-3.5 py-1.5 rounded-xl border border-slate-700 hover:bg-slate-800 transition whitespace-nowrap">
+                    <i class="fa-solid fa-award mr-1.5 text-emerald-400"></i>5대 수칙 & 증명서
                 </button>
             </nav>
         </div>
@@ -60,9 +116,9 @@
     <main class="max-w-6xl mx-auto px-4 py-6 sm:py-8 flex-grow w-full space-y-8">
 
         <!-- Hero Card -->
-        <section class="bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 rounded-3xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden">
+        <section class="bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 dark:from-slate-900 dark:via-slate-900 dark:to-indigo-950 rounded-3xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden border border-slate-800">
             <div class="relative z-10 space-y-4 max-w-3xl">
-                <div class="inline-block px-3 py-1 bg-amber-400/20 text-amber-300 rounded-full text-xs font-bold border border-amber-400/30">
+                <div class="inline-block px-3.5 py-1 bg-amber-400/20 text-amber-300 rounded-full text-xs font-bold border border-amber-400/30">
                     🔍 슬기로운 AI 탐구 생활 팩트체크 수사일지
                 </div>
                 <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight">
@@ -74,38 +130,39 @@
 
                 <!-- Action Button Grid -->
                 <div class="pt-4 flex flex-wrap items-center gap-3">
-                    <button onclick="switchTab('cases')" class="px-5 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold rounded-xl text-sm shadow-md transition flex items-center gap-2">
+                    <button onclick="switchTab('cases')" class="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-sm shadow-md transition flex items-center gap-2 active:scale-95">
                         <i class="fa-solid fa-user-ninja"></i> 4대 위험 사건 수사하기
                     </button>
-                    <button onclick="switchTab('tools')" class="px-5 py-2.5 bg-sky-500 hover:bg-sky-400 text-white font-bold rounded-xl text-sm shadow-md transition flex items-center gap-2">
+                    <button onclick="switchTab('tools')" class="px-5 py-2.5 bg-sky-600 hover:bg-sky-500 text-white font-bold rounded-xl text-sm shadow-md transition flex items-center gap-2 active:scale-95">
                         <i class="fa-solid fa-pen-to-square"></i> 출처 생성기 & 퀴즈
                     </button>
-                    <button onclick="switchTab('rules')" class="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-white font-bold rounded-xl text-sm shadow-md transition flex items-center gap-2">
+                    <button onclick="switchTab('rules')" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-sm shadow-md transition flex items-center gap-2 active:scale-95">
                         <i class="fa-solid fa-certificate"></i> 5대 수칙 & 증명서
                     </button>
                 </div>
 
-                <!-- Secondary Download / Modal Buttons (Requested by user) -->
-                <div class="pt-2 border-t border-slate-700/60 flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm">
-                    <button onclick="downloadPresentation()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 rounded-xl font-medium transition flex items-center gap-2">
+                <!-- Secondary Download / Modal Buttons -->
+                <div class="pt-3 border-t border-slate-700/60 flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm">
+                    <button onclick="downloadPresentation()" class="px-4 py-2 bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-600 rounded-xl font-medium transition flex items-center gap-2">
                         <i class="fa-solid fa-file-pdf text-rose-400"></i> 발표 자료 다운로드 (.pdf)
                     </button>
-                    <button onclick="openInfographicModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 rounded-xl font-medium transition flex items-center gap-2">
+                    <button onclick="openInfographicModal()" class="px-4 py-2 bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-600 rounded-xl font-medium transition flex items-center gap-2">
                         <i class="fa-solid fa-image text-emerald-400"></i> 인포그래픽 보기
                     </button>
-                    <button onclick="openVideoModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 rounded-xl font-medium transition flex items-center gap-2">
+                    <button onclick="openVideoModal()" class="px-4 py-2 bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-600 rounded-xl font-medium transition flex items-center gap-2">
                         <i class="fa-solid fa-circle-play text-amber-400"></i> 동영상 보기
                     </button>
                 </div>
             </div>
         </section>
 
+        <!-- TAB 1: 4대 위험 사건 -->
         <section id="tab-cases" class="tab-content space-y-8">
-            <div class="border-b border-slate-200 pb-4">
-                <h3 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
+            <div class="border-b border-slate-200 dark:border-slate-800 pb-4">
+                <h3 class="text-2xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
                     <i class="fa-solid fa-triangle-exclamation text-amber-500"></i> AI 활용 시 주의할 4대 위험 사건
                 </h3>
-                <p class="text-slate-600 text-sm mt-1 leading-relaxed">
+                <p class="text-slate-600 dark:text-slate-400 text-sm mt-1 leading-relaxed">
                     인공지능이 생성한 그럴듯한 답변 속에 숨겨진 리스크를 직접 탐지하고 분석하세요.
                 </p>
             </div>
@@ -113,64 +170,64 @@
             <!-- 4 Risk Cards Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Case 1 -->
-                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition space-y-3">
+                <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition space-y-3">
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center font-bold text-lg">1</div>
+                        <div class="w-10 h-10 rounded-xl bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-800/40 flex items-center justify-center font-bold text-lg">1</div>
                         <div>
-                            <h4 class="font-bold text-slate-900 text-base">환각 현상 (Hallucination)</h4>
-                            <p class="text-xs text-rose-600 font-semibold">허구 정보 및 가짜 출처 생성 위험</p>
+                            <h4 class="font-bold text-slate-900 dark:text-slate-100 text-base">환각 현상 (Hallucination)</h4>
+                            <p class="text-xs text-rose-600 dark:text-rose-400 font-semibold">허구 정보 및 가짜 출처 생성 위험</p>
                         </div>
                     </div>
-                    <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
-                        AI는 확률적 단어 조합 기계이므로 "세종대왕 맥북 투척 사건"처럼 역사적 사실이 아닌 허구의 소설을 진짜처럼 당당하게 답변하거나, 존재하지 않는 논문 URL 및 학학술 자료 제목을 만들어냅니다.
+                    <p class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm leading-relaxed">
+                        AI는 확률적 단어 조합 기계이므로 "세종대왕 맥북 투척 사건"처럼 역사적 사실이 아닌 허구의 소설을 진짜처럼 당당하게 답변하거나, 존재하지 않는 논문 URL 및 학술 자료 제목을 만들어냅니다.
                     </p>
                 </div>
 
                 <!-- Case 2 -->
-                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition space-y-3">
+                <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition space-y-3">
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center font-bold text-lg">2</div>
+                        <div class="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-800/40 flex items-center justify-center font-bold text-lg">2</div>
                         <div>
-                            <h4 class="font-bold text-slate-900 text-base">저작권 침해 및 표절</h4>
-                            <p class="text-xs text-amber-600 font-semibold">출처 미표기 및 복사·붙여넣기 남용</p>
+                            <h4 class="font-bold text-slate-900 dark:text-slate-100 text-base">저작권 침해 및 표절</h4>
+                            <p class="text-xs text-amber-600 dark:text-amber-400 font-semibold">출처 미표기 및 복사·붙여넣기 남용</p>
                         </div>
                     </div>
-                    <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
+                    <p class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm leading-relaxed">
                         수많은 저작권자의 땀방울이 담긴 인터넷 데이터를 학습했기 때문에 출처 표시 없이 그대로 사용하거나 제출하면 학문적 진실성을 해치는 심각한 표절(Plagiarism) 행위가 됩니다.
                     </p>
                 </div>
 
                 <!-- Case 3 -->
-                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition space-y-3">
+                <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition space-y-3">
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-lg">3</div>
+                        <div class="w-10 h-10 rounded-xl bg-indigo-100 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800/40 flex items-center justify-center font-bold text-lg">3</div>
                         <div>
-                            <h4 class="font-bold text-slate-900 text-base">개인정보 및 보안 유출</h4>
-                            <p class="text-xs text-indigo-600 font-semibold">민감 프롬프트 입력 시 학습 데이터 흡수</p>
+                            <h4 class="font-bold text-slate-900 dark:text-slate-100 text-base">개인정보 및 보안 유출</h4>
+                            <p class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold">민감 프롬프트 입력 시 학습 데이터 흡수</p>
                         </div>
                     </div>
-                    <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
+                    <p class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm leading-relaxed">
                         비밀번호, 주민등록번호, 내부 비밀 데이터나 계좌 정보를 질문창에 무심코 입력하면 AI 학습 데이터에 흡수되어 타인의 질문에 무단 유출될 수 있습니다.
                     </p>
                 </div>
 
                 <!-- Case 4 -->
-                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition space-y-3">
+                <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition space-y-3">
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center font-bold text-lg">4</div>
+                        <div class="w-10 h-10 rounded-xl bg-purple-100 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 border border-purple-200 dark:border-purple-800/40 flex items-center justify-center font-bold text-lg">4</div>
                         <div>
-                            <h4 class="font-bold text-slate-900 text-base">윤리적 편향성 및 고정관념</h4>
-                            <p class="text-xs text-purple-600 font-semibold">기존 웹 데이터의 성별/인종 편견 증폭</p>
+                            <h4 class="font-bold text-slate-900 dark:text-slate-100 text-base">윤리적 편향성 및 고정관념</h4>
+                            <p class="text-xs text-purple-600 dark:text-purple-400 font-semibold">기존 웹 데이터의 성별/인종 편견 증폭</p>
                         </div>
                     </div>
-                    <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
+                    <p class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm leading-relaxed">
                         학습 데이터의 편향으로 인해 "최고경영자"를 백인 남성으로만 묘사하거나, 특정 역사적 이슈에서 일방적인 주장만 학습하여 왜곡된 결과를 출력할 가능성이 있습니다.
                     </p>
                 </div>
             </div>
 
             <!-- 3-Step Fact-Check Simulator Interactive Component -->
-            <div class="bg-slate-900 rounded-3xl p-6 sm:p-8 text-white space-y-6 shadow-xl">
+            <div class="bg-slate-900 dark:bg-slate-900 rounded-3xl p-6 sm:p-8 text-white space-y-6 shadow-xl border border-slate-800">
                 <div>
                     <span class="text-xs font-bold text-amber-400 tracking-wider uppercase">Interactive Simulator</span>
                     <h4 class="text-xl sm:text-2xl font-bold mt-1">🛡️ 탐정단의 3단계 팩트 체크 방어술</h4>
@@ -195,33 +252,34 @@
                 </div>
 
                 <!-- Dynamic Output Box -->
-                <div id="fc-result-box" class="p-5 rounded-2xl bg-slate-800/90 border border-slate-700 text-sm leading-relaxed min-h-[100px] flex items-center">
+                <div id="fc-result-box" class="p-5 rounded-2xl bg-slate-950 border border-slate-800 text-sm leading-relaxed min-h-[100px] flex items-center">
                     <!-- Loaded via JavaScript -->
                 </div>
             </div>
         </section>
 
+        <!-- TAB 2: 출처 생성기 & 퀴즈 -->
         <section id="tab-tools" class="tab-content hidden space-y-8">
-            <div class="border-b border-slate-200 pb-4">
-                <h3 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
+            <div class="border-b border-slate-200 dark:border-slate-800 pb-4">
+                <h3 class="text-2xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
                     <i class="fa-solid fa-quote-left text-sky-500"></i> AI 활용 출처 생성기 & 윤리 퀴즈
                 </h3>
-                <p class="text-slate-600 text-sm mt-1 leading-relaxed">
+                <p class="text-slate-600 dark:text-slate-400 text-sm mt-1 leading-relaxed">
                     학교 제출용 보고서나 논문 작성 시 올바르고 투명하게 AI 출처 표기를 완성하세요.
                 </p>
             </div>
 
             <!-- Citation Generator Box -->
-            <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
-                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-4">
-                    <h4 class="font-bold text-slate-900 text-lg flex items-center gap-2">
+            <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
+                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 dark:border-slate-800 pb-4">
+                    <h4 class="font-bold text-slate-900 dark:text-slate-100 text-lg flex items-center gap-2">
                         <i class="fa-solid fa-wand-magic-sparkles text-sky-500"></i> 투명한 AI 출처 표기 자동 생성기
                     </h4>
                     <div class="flex items-center gap-2">
-                        <button onclick="fillThisGuideCitation()" class="px-3 py-1.5 bg-amber-100 hover:bg-amber-200 text-amber-900 rounded-xl text-xs font-bold transition">
+                        <button onclick="fillThisGuideCitation()" class="px-3 py-1.5 bg-amber-100 dark:bg-amber-950/60 hover:bg-amber-200 dark:hover:bg-amber-900/60 text-amber-900 dark:text-amber-300 border border-amber-300 dark:border-amber-800/50 rounded-xl text-xs font-bold transition">
                             📌 이 가이드 출처 채우기
                         </button>
-                        <button onclick="fillSampleCitation()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition">
+                        <button onclick="fillSampleCitation()" class="px-3 py-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold transition">
                             📝 예시 샘플 입력
                         </button>
                     </div>
@@ -229,58 +287,58 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs sm:text-sm">
                     <div class="space-y-1">
-                        <label class="font-bold text-slate-700">AI 모델명</label>
-                        <input type="text" id="cite-model" placeholder="예: Gemini 3 Flash" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-400">
+                        <label class="font-bold text-slate-700 dark:text-slate-300">AI 모델명</label>
+                        <input type="text" id="cite-model" placeholder="예: Gemini 3 Flash" class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-400">
                     </div>
                     <div class="space-y-1">
-                        <label class="font-bold text-slate-700">제공사</label>
-                        <input type="text" id="cite-provider" placeholder="예: Google" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-400">
+                        <label class="font-bold text-slate-700 dark:text-slate-300">제공사</label>
+                        <input type="text" id="cite-provider" placeholder="예: Google" class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-400">
                     </div>
                     <div class="space-y-1">
-                        <label class="font-bold text-slate-700">활용 날짜</label>
-                        <input type="date" id="cite-date" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-400">
+                        <label class="font-bold text-slate-700 dark:text-slate-300">활용 날짜</label>
+                        <input type="date" id="cite-date" class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-400">
                     </div>
                     <div class="space-y-1">
-                        <label class="font-bold text-slate-700">입력한 주요 질문(프롬프트)</label>
-                        <input type="text" id="cite-prompt" placeholder="질문 내용을 적어주세요" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-400">
+                        <label class="font-bold text-slate-700 dark:text-slate-300">입력한 주요 질문(프롬프트)</label>
+                        <input type="text" id="cite-prompt" placeholder="질문 내용을 적어주세요" class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-400">
                     </div>
                 </div>
 
-                <button onclick="generateCitation()" class="w-full py-3 bg-sky-500 hover:bg-sky-600 text-white font-bold rounded-xl text-sm transition shadow-sm">
+                <button onclick="generateCitation()" class="w-full py-3 bg-sky-600 hover:bg-sky-500 text-white font-bold rounded-xl text-sm transition shadow-sm">
                     출처 인용문 생성하기
                 </button>
 
                 <!-- Output Area -->
-                <div id="cite-output" class="hidden space-y-4 pt-4 border-t border-slate-100">
-                    <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200 space-y-2">
+                <div id="cite-output" class="hidden space-y-4 pt-4 border-t border-slate-100 dark:border-slate-800">
+                    <div class="bg-slate-50 dark:bg-slate-950 rounded-2xl p-4 border border-slate-200 dark:border-slate-800 space-y-2">
                         <div class="flex items-center justify-between">
-                            <span class="text-xs font-bold text-slate-500">일반 보고서 & 제출용 출처 표기</span>
-                            <button onclick="copyToClipboard('output-general')" class="text-xs text-sky-600 hover:underline font-bold">
-                                <i class="fa-regular fa-copy mr-1"></i>복사
+                            <span class="text-xs font-bold text-slate-500 dark:text-slate-400">일반 보고서 & 제출용 출처 표기</span>
+                            <button onclick="copyToClipboard('output-general')" class="text-xs text-sky-600 dark:text-sky-400 hover:underline font-bold flex items-center gap-1">
+                                <i class="fa-regular fa-copy"></i> 복사
                             </button>
                         </div>
-                        <p id="output-general" class="text-xs sm:text-sm font-medium text-slate-800 leading-relaxed"></p>
+                        <p id="output-general" class="text-xs sm:text-sm font-medium text-slate-800 dark:text-slate-200 leading-relaxed"></p>
                     </div>
 
-                    <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200 space-y-2">
+                    <div class="bg-slate-50 dark:bg-slate-950 rounded-2xl p-4 border border-slate-200 dark:border-slate-800 space-y-2">
                         <div class="flex items-center justify-between">
-                            <span class="text-xs font-bold text-slate-500">APA 7th 스타일 표준 인용 양식</span>
-                            <button onclick="copyToClipboard('output-apa')" class="text-xs text-sky-600 hover:underline font-bold">
-                                <i class="fa-regular fa-copy mr-1"></i>복사
+                            <span class="text-xs font-bold text-slate-500 dark:text-slate-400">APA 7th 스타일 표준 인용 양식</span>
+                            <button onclick="copyToClipboard('output-apa')" class="text-xs text-sky-600 dark:text-sky-400 hover:underline font-bold flex items-center gap-1">
+                                <i class="fa-regular fa-copy"></i> 복사
                             </button>
                         </div>
-                        <p id="output-apa" class="text-xs sm:text-sm font-mono text-slate-800 leading-relaxed"></p>
+                        <p id="output-apa" class="text-xs sm:text-sm font-mono text-slate-800 dark:text-slate-200 leading-relaxed"></p>
                     </div>
                 </div>
             </div>
 
             <!-- Quiz Section -->
-            <div class="bg-amber-50/50 rounded-3xl p-6 sm:p-8 border border-amber-200/60 space-y-6">
+            <div class="bg-amber-50/50 dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-amber-200/60 dark:border-slate-800 space-y-6">
                 <div>
-                    <h4 class="font-bold text-slate-900 text-lg flex items-center gap-2">
-                        <i class="fa-solid fa-clipboard-question text-amber-600"></i> 탐정단 역량 검증 윤리 퀴즈
+                    <h4 class="font-bold text-slate-900 dark:text-slate-100 text-lg flex items-center gap-2">
+                        <i class="fa-solid fa-clipboard-question text-amber-600 dark:text-amber-400"></i> 탐정단 역량 검증 윤리 퀴즈
                     </h4>
-                    <p class="text-slate-600 text-xs sm:text-sm mt-1 leading-relaxed">
+                    <p class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm mt-1 leading-relaxed">
                         퀴즈를 풀어 보며 알맞은 활용 수칙을 숙지하고 있는지 점검해보세요.
                     </p>
                 </div>
@@ -291,102 +349,103 @@
             </div>
         </section>
 
+        <!-- TAB 3: 5대 수칙 & 증명서 -->
         <section id="tab-rules" class="tab-content hidden space-y-8">
-            <div class="border-b border-slate-200 pb-4">
-                <h3 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
+            <div class="border-b border-slate-200 dark:border-slate-800 pb-4">
+                <h3 class="text-2xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
                     <i class="fa-solid fa-award text-emerald-500"></i> AI 활용 5대 핵심 원칙 & 서약서
                 </h3>
-                <p class="text-slate-600 text-sm mt-1 leading-relaxed">
+                <p class="text-slate-600 dark:text-slate-400 text-sm mt-1 leading-relaxed">
                     기술에 이끌려 다니지 않는 주체적인 AI 탐정으로서 5가지 원칙을 확인하고 서약에 참여하세요.
                 </p>
             </div>
 
             <!-- 5 Principles Cards -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-                <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm space-y-2">
-                    <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-sm">1</div>
-                    <h5 class="font-bold text-slate-900 text-sm">검증 (Fact-Check)</h5>
-                    <p class="text-slate-600 text-xs leading-relaxed">의심하기 및 교과서·공공 포털을 활용한 2차 교차 검증 의무화</p>
+                <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm space-y-2">
+                    <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/40 flex items-center justify-center font-bold text-sm">1</div>
+                    <h5 class="font-bold text-slate-900 dark:text-slate-100 text-sm">검증 (Fact-Check)</h5>
+                    <p class="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">의심하기 및 교과서·공공 포털을 활용한 2차 교차 검증 의무화</p>
                 </div>
-                <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm space-y-2">
-                    <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-sm">2</div>
-                    <h5 class="font-bold text-slate-900 text-sm">주체성 (Agency)</h5>
-                    <p class="text-slate-600 text-xs leading-relaxed">AI는 도구일 뿐, 최종 의사결정과 비판적 사고 주권은 나에게 있음</p>
+                <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm space-y-2">
+                    <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/40 flex items-center justify-center font-bold text-sm">2</div>
+                    <h5 class="font-bold text-slate-900 dark:text-slate-100 text-sm">주체성 (Agency)</h5>
+                    <p class="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">AI는 도구일 뿐, 최종 의사결정과 비판적 사고 주권은 나에게 있음</p>
                 </div>
-                <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm space-y-2">
-                    <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-sm">3</div>
-                    <h5 class="font-bold text-slate-900 text-sm">투명성 (Transparency)</h5>
-                    <p class="text-slate-600 text-xs leading-relaxed">AI 활용 사실을 감추지 않고 모델명과 인용 프롬프트를 정확히 명시</p>
+                <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm space-y-2">
+                    <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/40 flex items-center justify-center font-bold text-sm">3</div>
+                    <h5 class="font-bold text-slate-900 dark:text-slate-100 text-sm">투명성 (Transparency)</h5>
+                    <p class="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">AI 활용 사실을 감추지 않고 모델명과 인용 프롬프트를 정확히 명시</p>
                 </div>
-                <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm space-y-2">
-                    <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-sm">4</div>
-                    <h5 class="font-bold text-slate-900 text-sm">보안 (Security)</h5>
-                    <p class="text-slate-600 text-xs leading-relaxed">민감 정보 입력 차단 및 계정 2차 인증(MFA)으로 정보 유출 방지</p>
+                <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm space-y-2">
+                    <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/40 flex items-center justify-center font-bold text-sm">4</div>
+                    <h5 class="font-bold text-slate-900 dark:text-slate-100 text-sm">보안 (Security)</h5>
+                    <p class="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">민감 정보 입력 차단 및 계정 2차 인증(MFA)으로 정보 유출 방지</p>
                 </div>
-                <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm space-y-2">
-                    <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-sm">5</div>
-                    <h5 class="font-bold text-slate-900 text-sm">윤리적 포용 (Inclusion)</h5>
-                    <p class="text-slate-600 text-xs leading-relaxed">차별, 혐오 및 지식 왜곡을 일으키는 편향된 답변 감시 및 배제</p>
+                <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm space-y-2">
+                    <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/40 flex items-center justify-center font-bold text-sm">5</div>
+                    <h5 class="font-bold text-slate-900 dark:text-slate-100 text-sm">윤리적 포용 (Inclusion)</h5>
+                    <p class="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">차별, 혐오 및 지식 왜곡을 일으키는 편향된 답변 감시 및 배제</p>
                 </div>
             </div>
 
             <!-- Pledge Checklist & Certificate -->
-            <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
+            <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
                 <div>
-                    <h4 class="font-bold text-slate-900 text-lg flex items-center gap-2">
-                        <i class="fa-solid fa-file-signature text-emerald-600"></i> AI 탐정단 5대 서약 체크리스트
+                    <h4 class="font-bold text-slate-900 dark:text-slate-100 text-lg flex items-center gap-2">
+                        <i class="fa-solid fa-file-signature text-emerald-600 dark:text-emerald-400"></i> AI 탐정단 5대 서약 체크리스트
                     </h4>
-                    <p class="text-slate-600 text-xs sm:text-sm mt-1">
+                    <p class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm mt-1">
                         아래 서약 항목을 모두 선택하면 슬기로운 AI 탐정 임명장이 발급됩니다.
                     </p>
                 </div>
 
                 <div class="space-y-3 text-xs sm:text-sm">
-                    <label class="flex items-start gap-3 p-3 rounded-xl bg-slate-50 hover:bg-slate-100 transition cursor-pointer">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 dark:hover:bg-slate-800/60 border border-slate-200 dark:border-slate-800 transition cursor-pointer">
                         <input type="checkbox" onchange="checkPledgeProgress()" class="pledge-check mt-0.5 w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500">
-                        <span>[검증] AI의 답변은 기본적으로 확인되지 않은 가설로 여기며 반드시 직접 1차 교차 검증하겠습니다.</span>
+                        <span class="text-slate-800 dark:text-slate-200">[검증] AI의 답변은 기본적으로 확인되지 않은 가설로 여기며 반드시 직접 1차 교차 검증하겠습니다.</span>
                     </label>
-                    <label class="flex items-start gap-3 p-3 rounded-xl bg-slate-50 hover:bg-slate-100 transition cursor-pointer">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 dark:hover:bg-slate-800/60 border border-slate-200 dark:border-slate-800 transition cursor-pointer">
                         <input type="checkbox" onchange="checkPledgeProgress()" class="pledge-check mt-0.5 w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500">
-                        <span>[주체성] 초안을 그대로 복사해 제출하지 않고 나의 비판적 언어와 생각으로 재구성하겠습니다.</span>
+                        <span class="text-slate-800 dark:text-slate-200">[주체성] 초안을 그대로 복사해 제출하지 않고 나의 비판적 언어와 생각으로 재구성하겠습니다.</span>
                     </label>
-                    <label class="flex items-start gap-3 p-3 rounded-xl bg-slate-50 hover:bg-slate-100 transition cursor-pointer">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 dark:hover:bg-slate-800/60 border border-slate-200 dark:border-slate-800 transition cursor-pointer">
                         <input type="checkbox" onchange="checkPledgeProgress()" class="pledge-check mt-0.5 w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500">
-                        <span>[투명성] 과제 수행 시 사용한 AI 서비스 이름과 사용 프롬프트를 투명하게 밝히겠습니다.</span>
+                        <span class="text-slate-800 dark:text-slate-200">[투명성] 과제 수행 시 사용한 AI 서비스 이름과 사용 프롬프트를 투명하게 밝히겠습니다.</span>
                     </label>
-                    <label class="flex items-start gap-3 p-3 rounded-xl bg-slate-50 hover:bg-slate-100 transition cursor-pointer">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 dark:hover:bg-slate-800/60 border border-slate-200 dark:border-slate-800 transition cursor-pointer">
                         <input type="checkbox" onchange="checkPledgeProgress()" class="pledge-check mt-0.5 w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500">
-                        <span>[보안] 나의 비밀번호, 개인정보 및 타인의 민감 정보를 대화창에 절대 입력하지 않겠습니다.</span>
+                        <span class="text-slate-800 dark:text-slate-200">[보안] 나의 비밀번호, 개인정보 및 타인의 민감 정보를 대화창에 절대 입력하지 않겠습니다.</span>
                     </label>
-                    <label class="flex items-start gap-3 p-3 rounded-xl bg-slate-50 hover:bg-slate-100 transition cursor-pointer">
+                    <label class="flex items-start gap-3 p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 dark:hover:bg-slate-800/60 border border-slate-200 dark:border-slate-800 transition cursor-pointer">
                         <input type="checkbox" onchange="checkPledgeProgress()" class="pledge-check mt-0.5 w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500">
-                        <span>[포용] 성별, 인종, 계층 간 차별이나 혐오를 부추기는 편향된 주장을 배제하고 정제하겠습니다.</span>
+                        <span class="text-slate-800 dark:text-slate-200">[포용] 성별, 인종, 계층 간 차별이나 혐오를 부추기는 편향된 주장을 배제하고 정제하겠습니다.</span>
                     </label>
                 </div>
 
-                <!-- Interactive Certificate Display -->
-                <div id="printable-certificate" class="mt-8 bg-amber-50/80 rounded-3xl p-8 border-4 border-dashed border-amber-300 text-center space-y-6">
+                <!-- Certificate Display Card -->
+                <div id="printable-certificate" class="mt-8 bg-amber-50/80 dark:bg-amber-950/20 rounded-3xl p-8 border-4 border-dashed border-amber-300 dark:border-amber-700/60 text-center space-y-6">
                     <div class="space-y-2">
-                        <span class="font-gaegu text-2xl text-amber-800">탐 정 임 명 장</span>
-                        <h3 class="text-3xl font-extrabold text-slate-900 tracking-tight">슬기로운 AI 탐정 임명장</h3>
+                        <span class="font-gaegu text-2xl text-amber-800 dark:text-amber-300">탐 정 임 명 장</span>
+                        <h3 class="text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">슬기로운 AI 탐정 임명장</h3>
                     </div>
 
                     <div class="max-w-md mx-auto space-y-3">
                         <div class="flex items-center justify-center gap-2">
-                            <span class="font-bold text-slate-700 text-sm">성 명 :</span>
-                            <input type="text" id="detective-name-input" placeholder="이름을 입력하세요" class="p-2 px-4 rounded-xl border border-amber-300 text-center font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                            <span class="font-bold text-slate-700 dark:text-slate-300 text-sm">성 명 :</span>
+                            <input type="text" id="detective-name-input" placeholder="이름을 입력하세요" class="p-2 px-4 rounded-xl border border-amber-300 dark:border-amber-700 dark:bg-slate-950 text-center font-bold text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500">
                         </div>
-                        <p class="text-xs text-slate-600 leading-relaxed">
+                        <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
                             위 사람은 생성형 AI 4대 위험 사건을 깊이 숙지하고, 5대 올바른 활용 원칙을 준수하여 주체적이고 윤리적인 팩트체크를 수행할 정식 탐정으로 임명합니다.
                         </p>
                     </div>
 
-                    <div class="pt-2 text-xs font-semibold text-slate-500 flex items-center justify-between max-w-md mx-auto">
+                    <div class="pt-2 text-xs font-semibold text-slate-500 dark:text-slate-400 flex items-center justify-between max-w-md mx-auto">
                         <span>발급일: <span id="cert-date"></span></span>
                         <span>발행처: AI 탐정단 가이드본부</span>
                     </div>
 
-                    <button onclick="printCertificate()" class="px-6 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold rounded-xl text-sm transition shadow-md print:hidden">
+                    <button onclick="printCertificate()" class="px-6 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-xl text-sm transition shadow-md print:hidden">
                         <i class="fa-solid fa-print mr-1"></i> 임명장 인쇄 및 저장
                     </button>
                 </div>
@@ -395,9 +454,10 @@
 
     </main>
 
-    <footer class="bg-slate-900 text-slate-400 py-8 border-t border-slate-800 mt-12 text-xs">
+    <!-- Footer Section -->
+    <footer class="bg-slate-900 dark:bg-slate-950 text-slate-400 py-8 border-t border-slate-800 mt-12 text-xs">
         <div class="max-w-6xl mx-auto px-4 space-y-4">
-            <div class="bg-slate-800/80 rounded-2xl p-4 border border-slate-700 text-slate-300 space-y-2">
+            <div class="bg-slate-800/80 dark:bg-slate-900 rounded-2xl p-4 border border-slate-700 dark:border-slate-800 text-slate-300 space-y-2">
                 <p class="font-bold text-amber-400 flex items-center gap-2 text-sm">
                     <i class="fa-solid fa-circle-info"></i> AI 활용 투명성 공개 선언
                 </p>
@@ -405,7 +465,7 @@
                     본 웹 가이드 자료는 인공지능(Gemini 모델)을 활용하여 분석 및 웹 어플리케이션으로 재구성되었습니다.
                 </p>
                 <p class="font-mono text-[11px] text-slate-400 leading-relaxed">
-                    [APA 출처 양식] Google. (2026). Gemini 3 Flash [Large Language Model]. https://ai.google/ (활용일: 2026-07-29, 팩트체크 및 인용 교차검증 완료)
+                    [APA 출처 양식] Google. (2026). Gemini 3 Flash [Large Language Model]. https://ai.google/ (활용일: 2026-07-31, 팩트체크 및 인용 교차검증 완료)
                 </p>
             </div>
             <p class="text-center text-slate-500">
@@ -416,23 +476,23 @@
 
     <!-- Infographic Modal -->
     <div id="infographic-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col shadow-2xl">
-            <div class="p-4 bg-slate-900 text-white flex items-center justify-between">
+        <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col shadow-2xl border border-slate-800">
+            <div class="p-4 bg-slate-900 text-white flex items-center justify-between border-b border-slate-800">
                 <h3 class="font-bold text-base flex items-center gap-2">
                     <i class="fa-solid fa-image text-emerald-400"></i> 생성형 AI 책임 활용 가이드라인 인포그래픽
                 </h3>
                 <button onclick="closeInfographicModal()" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center font-bold">✕</button>
             </div>
-            <div class="p-4 overflow-y-auto flex-grow bg-slate-100 flex items-center justify-center">
-                <img src="생성형_AI_책임_활용_가이드라인.png" alt="생성형 AI 책임 활용 가이드라인 인포그래픽" class="max-w-full h-auto rounded-xl shadow-md" onerror="this.onerror=null; this.src='https://placehold.co/800x1000/1e293b/ffffff?text=%EC%83%9D%EC%84%B1%ED%9B%99+AI+%EC%B1%84%EC%9E%84+%ED%99%9C%EC%9A%A9+%EA%B0%80%EC%9D%B4%EB%93%9C%EB%9D%BC%EC%9D%B8';">
+            <div class="p-4 overflow-y-auto flex-grow bg-slate-100 dark:bg-slate-950 flex items-center justify-center">
+                <img src="생성형_AI_책임_활용_가이드라인.png" alt="생성형 AI 책임 활용 가이드라인 인포그래픽" class="max-w-full h-auto rounded-xl shadow-md" onerror="this.onerror=null; this.src='https://placehold.co/800x1000/0f172a/ffffff?text=%EC%83%9D%EC%84%B1%ED%9B%99+AI+%EC%B1%84%EC%9E%84+%ED%99%9C%EC%9A%A9+%EA%B0%80%EC%9D%B4%EB%93%9C%EB%9D%BC%EC%9D%B8';">
             </div>
         </div>
     </div>
 
     <!-- Video Modal -->
     <div id="video-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl max-w-3xl w-full overflow-hidden flex flex-col shadow-2xl">
-            <div class="p-4 bg-slate-900 text-white flex items-center justify-between">
+        <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-3xl w-full overflow-hidden flex flex-col shadow-2xl border border-slate-800">
+            <div class="p-4 bg-slate-900 text-white flex items-center justify-between border-b border-slate-800">
                 <h3 class="font-bold text-base flex items-center gap-2">
                     <i class="fa-solid fa-circle-play text-amber-400"></i> AI의 진실: 편향, 환각, 생존 규칙
                 </h3>
@@ -448,6 +508,42 @@
     </div>
 
     <script>
+        // Custom Toast Notification System
+        function showNotification(msg) {
+            const toast = document.getElementById('toast-notification');
+            const msgSpan = document.getElementById('toast-message');
+            if (!toast || !msgSpan) return;
+
+            msgSpan.innerText = msg;
+            toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+            toast.classList.add('opacity-100', 'translate-y-0');
+
+            setTimeout(() => {
+                toast.classList.remove('opacity-100', 'translate-y-0');
+                toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+            }, 3000);
+        }
+
+        // Theme Toggle Logic
+        function toggleTheme() {
+            const html = document.documentElement;
+            const icon = document.getElementById('theme-icon');
+            const text = document.getElementById('theme-text');
+
+            html.classList.toggle('dark');
+            const isDark = html.classList.contains('dark');
+
+            if (isDark) {
+                icon.className = 'fa-solid fa-moon text-amber-400';
+                text.innerText = '다크 모드';
+                showNotification('🌙 다크 모드로 전환되었습니다.');
+            } else {
+                icon.className = 'fa-solid fa-sun text-amber-500';
+                text.innerText = '라이트 모드';
+                showNotification('☀️ 라이트 모드로 전환되었습니다.');
+            }
+        }
+
         // Tab Navigation Switcher
         function switchTab(tabId) {
             const contents = document.querySelectorAll('.tab-content');
@@ -475,6 +571,7 @@
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+            showNotification('📥 발표 자료 다운로드가 시작되었습니다.');
         }
 
         // Modals Logic
@@ -590,6 +687,7 @@
             if (apaBox) apaBox.innerText = `${provider}. (${year}). ${model} [Large Language Model]. https://ai.google/ (검색일: ${date}, 프롬프트: "${prompt}")`;
 
             if (outArea) outArea.classList.remove('hidden');
+            showNotification('✨ AI 출처 인용문이 생성되었습니다.');
         }
 
         function copyToClipboard(elementId) {
@@ -602,7 +700,7 @@
             textarea.select();
             try {
                 document.execCommand('copy');
-                alert('📋 클립보드에 인용문이 복사되었습니다!');
+                showNotification('📋 인용문이 클립보드에 복사되었습니다.');
             } catch (err) {
                 console.error('복사 실패', err);
             }
@@ -648,16 +746,16 @@
             if (!container) return;
 
             container.innerHTML = quizData.map((item, qIdx) => `
-                <div class="bg-white rounded-2xl p-5 border border-amber-200/80 space-y-3">
-                    <p class="font-bold text-slate-900 text-xs sm:text-sm">${item.q}</p>
+                <div class="bg-white dark:bg-slate-950 rounded-2xl p-5 border border-amber-200/80 dark:border-slate-800 space-y-3">
+                    <p class="font-bold text-slate-900 dark:text-slate-100 text-xs sm:text-sm">${item.q}</p>
                     <div class="space-y-2">
                         ${item.options.map((opt, oIdx) => `
-                            <button onclick="checkQuiz(${qIdx}, ${oIdx})" id="quiz-opt-${qIdx}-${oIdx}" class="w-full text-left p-3 rounded-xl border border-slate-200 hover:border-amber-400 hover:bg-amber-50/50 text-xs sm:text-sm transition text-slate-700">
+                            <button onclick="checkQuiz(${qIdx}, ${oIdx})" id="quiz-opt-${qIdx}-${oIdx}" class="w-full text-left p-3 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-amber-400 hover:bg-amber-50/50 dark:hover:bg-slate-900 text-xs sm:text-sm transition text-slate-700 dark:text-slate-300">
                                 ${opt}
                             </button>
                         `).join('')}
                     </div>
-                    <div id="quiz-exp-${qIdx}" class="hidden p-3 bg-amber-50 rounded-xl text-xs text-amber-900 font-semibold"></div>
+                    <div id="quiz-exp-${qIdx}" class="hidden p-3 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/40 rounded-xl text-xs text-amber-900 dark:text-amber-300 font-semibold"></div>
                 </div>
             `).join('');
         }
@@ -671,9 +769,9 @@
                 if (btn) {
                     btn.disabled = true;
                     if (oIdx === item.answer) {
-                        btn.classList.add('bg-emerald-100', 'border-emerald-400', 'text-emerald-900', 'font-bold');
+                        btn.className = 'w-full text-left p-3 rounded-xl border border-emerald-400 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-900 dark:text-emerald-300 font-bold text-xs sm:text-sm';
                     } else if (oIdx === selectedOpt) {
-                        btn.classList.add('bg-rose-100', 'border-rose-400', 'text-rose-900');
+                        btn.className = 'w-full text-left p-3 rounded-xl border border-rose-400 bg-rose-100 dark:bg-rose-950/60 text-rose-900 dark:text-rose-300 text-xs sm:text-sm';
                     }
                 }
             });
@@ -681,9 +779,9 @@
             if (expBox) {
                 expBox.classList.remove('hidden');
                 if (selectedOpt === item.answer) {
-                    expBox.innerHTML = `🎉 정답입니다! <br><span class="font-normal text-slate-700">${item.exp}</span>`;
+                    expBox.innerHTML = `🎉 정답입니다! <br><span class="font-normal text-slate-700 dark:text-slate-300">${item.exp}</span>`;
                 } else {
-                    expBox.innerHTML = `❌ 아쉽네요. <br><span class="font-normal text-slate-700">${item.exp}</span>`;
+                    expBox.innerHTML = `❌ 아쉽네요. <br><span class="font-normal text-slate-700 dark:text-slate-300">${item.exp}</span>`;
                 }
             }
         }
@@ -695,7 +793,7 @@
             checks.forEach(c => { if(c.checked) checkedCount++; });
 
             if (checkedCount === 5) {
-                alert('🌟 5대 원칙을 모두 완수하셨습니다! 임명장에 성명을 작성하여 수료증을 완성하세요.');
+                showNotification('🌟 5대 원칙 완수! 임명장에 이름을 입력하여 완료하세요.');
             }
         }
 
@@ -703,7 +801,7 @@
         function printCertificate() {
             const nameInput = document.getElementById('detective-name-input');
             if (nameInput && !nameInput.value.trim()) {
-                alert('임명장에 기록할 성명을 입력해 주세요!');
+                showNotification('⚠️ 임명장에 수록할 성명을 입력해 주세요!');
                 nameInput.focus();
                 return;
             }
