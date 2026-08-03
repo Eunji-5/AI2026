@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>전문대학 vs 일반대학: 공학계열 진로 & 취업률 정밀 비교 포털</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter & Noto Sans KR -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800&display=swap">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Noto Sans KR', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        },
+                        tech: {
+                            50: '#f0fdf4',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #1e3a8a 100%);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        .tab-btn.active {
+            border-bottom: 3px solid #2563eb;
+            color: #2563eb;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 antialiased selection:bg-blue-200 transition-colors duration-300">
+
+    <!-- Navigation Bar -->
+    <header class="sticky top-0 z-50 bg-slate-900/95 text-white backdrop-blur shadow-md border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="#" class="flex items-center space-x-3 group">
+                    <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-blue-500/30 group-hover:scale-105 transition-transform">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <div>
+                        <span class="font-extrabold text-lg tracking-tight">공학진로 LAB</span>
+                        <span class="text-xs bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full ml-2 hidden sm:inline-block border border-blue-400/30">전문대 vs 일반대</span>
+                    </div>
+                </a>
+                
+                <div class="flex items-center space-x-3">
+                    <nav class="hidden md:flex space-x-5 text-sm font-medium items-center">
+                        <a href="#comparison" class="hover:text-blue-400 transition-colors"><i class="fa-solid fa-code-compare mr-1"></i> 핵심 차이점</a>
+                        <a href="#employment" class="hover:text-blue-400 transition-colors"><i class="fa-solid fa-chart-line mr-1"></i> 공학계열 취업률</a>
+                        <a href="#majors" class="hover:text-blue-400 transition-colors"><i class="fa-solid fa-layer-group mr-1"></i> 세부전공 탐색</a>
+                        <a href="#pathways" class="hover:text-blue-400 transition-colors"><i class="fa-solid fa-route mr-1"></i> 연계 과정</a>
+                        <a href="#quiz" class="hover:text-blue-400 transition-colors bg-blue-600 hover:bg-blue-500 text-white px-3 py-1.5 rounded-lg transition-all shadow"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i> 맞춤 진단</a>
+                    </nav>
+
+                    <!-- Header Control Buttons: Home & Dark Mode Toggle -->
+                    <div class="flex items-center space-x-2 border-l border-slate-700 pl-3">
+                        <!-- Home Button -->
+                        <a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;" 
+                           class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-all border border-slate-700 flex items-center justify-center" 
+                           title="최상단으로 이동">
+                            <i class="fa-solid fa-house text-sm"></i>
+                            <span class="sr-only">홈</span>
+                        </a>
+                        
+                        <!-- Dark / Light Mode Toggle Button -->
+                        <button id="themeToggleBtn" onclick="toggleTheme()" 
+                                class="p-2 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-400 transition-all border border-slate-700 flex items-center gap-2 text-xs font-semibold" 
+                                title="라이트/다크 모드 전환">
+                            <i class="fa-solid fa-moon" id="themeIcon"></i>
+                            <span id="themeText" class="hidden sm:inline text-slate-200">다크 모드</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Banner -->
+    <section class="gradient-bg text-white py-16 lg:py-20 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-3xl mx-auto">
+                <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-blue-500/20 text-blue-300 border border-blue-400/30 mb-4">
+                    <i class="fa-solid fa-chart-pie"></i> 교육부 & KEDI 고등교육기관 취업통계 기반 분석
+                </span>
+                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight mb-6">
+                    전문대학 vs 일반대학<br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-sky-300 to-teal-300">공학계열 진로 & 취업률 정밀 비교</span>
+                </h1>
+                <p class="text-slate-300 text-base sm:text-lg leading-relaxed mb-8">
+                    수업연한부터 학습 커리큘럼, 그리고 공학 분야 세부 전공별 취업률과 유지취업률까지!<br class="hidden sm:inline">
+                    본인의 라이프스타일과 목적에 가장 부합하는 전략적 학업 경로를 설계하세요.
+                </p>
+
+                <!-- Quick Stats Badges -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
+                    <div class="bg-slate-800/80 border border-slate-700 p-4 rounded-xl text-center backdrop-blur">
+                        <div class="text-xs text-slate-400 mb-1">공학계열 평균 취업률</div>
+                        <div class="text-2xl font-bold text-blue-400">70.4%</div>
+                        <div class="text-[11px] text-slate-400 mt-1">전 계열 중 최상위권</div>
+                    </div>
+                    <div class="bg-slate-800/80 border border-slate-700 p-4 rounded-xl text-center backdrop-blur">
+                        <div class="text-xs text-slate-400 mb-1">전문대 공학 강점</div>
+                        <div class="text-2xl font-bold text-teal-400">72.8%</div>
+                        <div class="text-[11px] text-slate-400 mt-1">빠른 실무 입직률</div>
+                    </div>
+                    <div class="bg-slate-800/80 border border-slate-700 p-4 rounded-xl text-center backdrop-blur">
+                        <div class="text-xs text-slate-400 mb-1">일반대 공학 유지취업률</div>
+                        <div class="text-2xl font-bold text-sky-400">86.2%</div>
+                        <div class="text-[11px] text-slate-400 mt-1">고용 안정성 우수</div>
+                    </div>
+                    <div class="bg-slate-800/80 border border-slate-700 p-4 rounded-xl text-center backdrop-blur">
+                        <div class="text-xs text-slate-400 mb-1">전공 연계 연속성</div>
+                        <div class="text-2xl font-bold text-indigo-400">전공심화</div>
+                        <div class="text-[11px] text-slate-400 mt-1">전문대 ➜ 4년제 학사</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 1: Institutional Differences -->
+    <section id="comparison" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-12">
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mb-3">
+                <i class="fa-solid fa-scale-balanced text-blue-600 mr-2"></i>전문대학 vs 일반대학 핵심 차이점
+            </h2>
+            <p class="text-slate-600 dark:text-slate-400 text-sm sm:text-base">
+                교육 목적, 수업 연한, 학위 종류 및 커리큘럼의 근본적 구조를 한눈에 비교해 보세요.
+            </p>
+        </div>
+
+        <!-- Interactive Visual Comparison Cards -->
+        <div class="grid md:grid-cols-2 gap-8 mb-12">
+            <!-- 전문대학 Card -->
+            <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 sm:p-8 border-2 border-teal-100 dark:border-teal-900/50 shadow-md hover:shadow-xl transition-all relative overflow-hidden group">
+                <div class="absolute top-0 right-0 bg-teal-500 text-white text-xs font-bold px-4 py-1.5 rounded-bl-xl">
+                    실무 & 직업 역량 중심
+                </div>
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-14 h-14 rounded-2xl bg-teal-50 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400 flex items-center justify-center text-2xl font-bold border border-teal-100 dark:border-teal-800">
+                        <i class="fa-solid fa-wrench"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white">전문대학 (Junior / Community College)</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">2년제 · 3년제 · 4년제(간호 등 특화)</p>
+                    </div>
+                </div>
+                <ul class="space-y-3 text-sm text-slate-700 dark:text-slate-300 mb-6">
+                    <li class="flex items-start gap-2.5">
+                        <i class="fa-solid fa-circle-check text-teal-500 mt-0.5"></i>
+                        <span><strong>교육 목적:</strong> 산업 현장 즉시 투입 가능한 전문 기술인 양성</span>
+                    </li>
+                    <li class="flex items-start gap-2.5">
+                        <i class="fa-solid fa-circle-check text-teal-500 mt-0.5"></i>
+                        <span><strong>수업 연한:</strong> 공학계열 중심 <strong>2년~3년제</strong> (SW/IT는 3년제 다수)</span>
+                    </li>
+                    <li class="flex items-start gap-2.5">
+                        <i class="fa-solid fa-circle-check text-teal-500 mt-0.5"></i>
+                        <span><strong>수여 학위:</strong> 전문학사 (Associate Degree)</span>
+                    </li>
+                    <li class="flex items-start gap-2.5">
+                        <i class="fa-solid fa-circle-check text-teal-500 mt-0.5"></i>
+                        <span><strong>커리큘럼:</strong> 실습 60% + 이론 40%, 국가기술자격증 취득 밀착 연계</span>
+                    </li>
+                    <li class="flex items-start gap-2.5">
+                        <i class="fa-solid fa-circle-check text-teal-500 mt-0.5"></i>
+                        <span><strong>진로 이점:</strong> 빠른 사회 진출, 비용 절감, 학사학위 전공심화/편입 연계</span>
+                    </li>
+                </ul>
+                <div class="bg-teal-50/70 dark:bg-teal-950/40 p-3.5 rounded-xl border border-teal-100 dark:border-teal-900/60 text-xs text-teal-800 dark:text-teal-300 flex items-center gap-2">
+                    <i class="fa-solid fa-lightbulb text-teal-600 dark:text-teal-400 text-base"></i>
+                    <span>공학계열 SW·IT학과의 경우 3년제 과정을 선택하면 탄탄한 실무 프로젝트 역량을 쌓을 수 있습니다.</span>
+                </div>
+            </div>
+
+            <!-- 일반대학 Card -->
+            <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 sm:p-8 border-2 border-blue-100 dark:border-blue-900/50 shadow-md hover:shadow-xl transition-all relative overflow-hidden group">
+                <div class="absolute top-0 right-0 bg-blue-600 text-white text-xs font-bold px-4 py-1.5 rounded-bl-xl">
+                    학문 & 심화 R&D 중심
+                </div>
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-14 h-14 rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center text-2xl font-bold border border-blue-100 dark:border-blue-800">
+                        <i class="fa-solid fa-microscope"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white">일반대학교 (4-Year University)</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">4년제 정규 학사 과정</p>
+                    </div>
+                </div>
+                <ul class="space-y-3 text-sm text-slate-700 dark:text-slate-300 mb-6">
+                    <li class="flex items-start gap-2.5">
+                        <i class="fa-solid fa-circle-check text-blue-600 dark:text-blue-400 mt-0.5"></i>
+                        <span><strong>교육 목적:</strong> 학문적 원리 탐구, 원천기술 R&D 및 고급 공학 인재 양성</span>
+                    </li>
+                    <li class="flex items-start gap-2.5">
+                        <i class="fa-solid fa-circle-check text-blue-600 dark:text-blue-400 mt-0.5"></i>
+                        <span><strong>수업 연한:</strong> 정규 <strong>4년제</strong></span>
+                    </li>
+                    <li class="flex items-start gap-2.5">
+                        <i class="fa-solid fa-circle-check text-blue-600 dark:text-blue-400 mt-0.5"></i>
+                        <span><strong>수여 학위:</strong> 공학사 (Bachelor of Engineering)</span>
+                    </li>
+                    <li class="flex items-start gap-2.5">
+                        <i class="fa-solid fa-circle-check text-blue-600 dark:text-blue-400 mt-0.5"></i>
+                        <span><strong>커리큘럼:</strong> 공학기초(수학·물리) + 공학설계 + 원리 중심 이론 심화</span>
+                    </li>
+                    <li class="flex items-start gap-2.5">
+                        <i class="fa-solid fa-circle-check text-blue-600 dark:text-blue-400 mt-0.5"></i>
+                        <span><strong>진로 이점:</strong> 대기업/공공기관 연구직, 대학원 석·박사 진학, 해외 유학</span>
+                    </li>
+                </ul>
+                <div class="bg-blue-50/70 dark:bg-blue-950/40 p-3.5 rounded-xl border border-blue-100 dark:border-blue-900/60 text-xs text-blue-800 dark:text-blue-300 flex items-center gap-2">
+                    <i class="fa-solid fa-lightbulb text-blue-600 dark:text-blue-400 text-base"></i>
+                    <span>R&D 엔지니어 및 설계 직무 진출이나 대학원 진학을 목표로 할 경우 4년제 학사가 필수적입니다.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comparison Table Breakdown -->
+        <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+            <div class="bg-slate-900 dark:bg-slate-950 text-white p-4 px-6 flex justify-between items-center border-b border-slate-800">
+                <h3 class="font-bold text-base sm:text-lg flex items-center gap-2">
+                    <i class="fa-solid fa-table text-blue-400"></i> 세부 항목별 정밀 비교표
+                </h3>
+                <span class="text-xs text-slate-400">scroll horizontally ➔</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left border-collapse">
+                    <thead class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold border-b border-slate-200 dark:border-slate-700">
+                        <tr>
+                            <th class="p-4 w-1/5">비교 구분</th>
+                            <th class="p-4 w-2/5 text-teal-700 dark:text-teal-300 bg-teal-50/50 dark:bg-teal-950/30">전문대학 (2~3년제)</th>
+                            <th class="p-4 w-2/5 text-blue-700 dark:text-blue-300 bg-blue-50/50 dark:bg-blue-950/30">일반대학 (4년제)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200 dark:divide-slate-800 text-slate-700 dark:text-slate-300">
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                            <td class="p-4 font-semibold text-slate-900 dark:text-white bg-slate-50/50 dark:bg-slate-850">학위 및 연한</td>
+                            <td class="p-4">전문학사 (2년/3년)</td>
+                            <td class="p-4">공학사 학사학위 (4년)</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                            <td class="p-4 font-semibold text-slate-900 dark:text-white bg-slate-50/50 dark:bg-slate-850">수업 특성</td>
+                            <td class="p-4">실습 및 프로젝트 위주, 자격증 취득 중심</td>
+                            <td class="p-4">공학수학·기초과학 및 이론 심화, 캡스톤 디자인</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                            <td class="p-4 font-semibold text-slate-900 dark:text-white bg-slate-50/50 dark:bg-slate-850">등록금 비용</td>
+                            <td class="p-4">상대적으로 적은 누적 비용 (2~3년 분)</td>
+                            <td class="p-4">4년 전체 등록금 부담 (상대적 높음)</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                            <td class="p-4 font-semibold text-slate-900 dark:text-white bg-slate-50/50 dark:bg-slate-850">주요 타겟 직무</td>
+                            <td class="p-4">현장 엔지니어, 테크니션, 생산관리, 웹/SW 개발자</td>
+                            <td class="p-4">R&D 연구원, 시스템 설계자, 공공기관 기술직, 엔지니어링</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                            <td class="p-4 font-semibold text-slate-900 dark:text-white bg-slate-50/50 dark:bg-slate-850">대학원 진학</td>
+                            <td class="p-4">전공심화과정 또는 4년제 편입 후 가능</td>
+                            <td class="p-4">졸업 후 바로 석사/박사 과정 진학 가능</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Employment Rates Analytics Dashboard -->
+    <section id="employment" class="py-16 bg-slate-100 dark:bg-slate-900/60 border-y border-slate-200 dark:border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <span class="text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-950 px-3 py-1 rounded-full uppercase tracking-wider border border-blue-200 dark:border-blue-800">Data Analytics</span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-2 mb-3">
+                    <i class="fa-solid fa-chart-column text-blue-600 mr-2"></i>공학계열 취업률 정밀 비교 분석
+                </h2>
+                <p class="text-slate-600 dark:text-slate-400 text-sm sm:text-base">
+                    교육부 고등교육기관 졸업자 취업통계를 바탕으로 한 전문대학 및 일반대학 공학계열의 취업 성과 분석입니다.
+                </p>
+            </div>
+
+            <!-- Charts Grid -->
+            <div class="grid lg:grid-cols-2 gap-8 mb-10">
+                <!-- Chart 1: Major Field Overall Employment Rate Comparison -->
+                <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-slate-900 dark:text-white text-base sm:text-lg flex items-center gap-2">
+                            <i class="fa-solid fa-chart-bar text-teal-600"></i> 계열별 취업률 비교 (전문대 vs 일반대)
+                        </h3>
+                        <span class="text-xs bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 px-2.5 py-1 rounded-md">단위: %</span>
+                    </div>
+                    <div class="relative h-72">
+                        <canvas id="overallFieldChart"></canvas>
+                    </div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-3 bg-slate-50 dark:bg-slate-800/60 p-2.5 rounded-lg border border-slate-200 dark:border-slate-700">
+                        📌 <strong>분석:</strong> 공학계열은 전문대학(72.8%)과 일반대학(70.4%) 모두 전체 학문 계열 중 가장 높은 수준의 취업률을 기록하고 있습니다.
+                    </p>
+                </div>
+
+                <!-- Chart 2: Detailed Engineering Sub-Disciplines -->
+                <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-slate-900 dark:text-white text-base sm:text-lg flex items-center gap-2">
+                            <i class="fa-solid fa-sliders text-blue-600"></i> 공학 세부 전공별 취업률 비교
+                        </h3>
+                        <span class="text-xs bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 px-2.5 py-1 rounded-md">단위: %</span>
+                    </div>
+                    <div class="relative h-72">
+                        <canvas id="engineeringSubChart"></canvas>
+                    </div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-3 bg-slate-50 dark:bg-slate-800/60 p-2.5 rounded-lg border border-slate-200 dark:border-slate-700">
+                        📌 <strong>분석:</strong> 컴퓨터·SW 및 기계·전기전자 분야는 전문대학의 실무 현장 배치율이 높은 반면, 화학·소재 및 메카트로닉스는 일반대학도 동등 이상의 높은 취업 경쟁력을 보여줍니다.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Additional Quality Metrics Cards -->
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Metric 1: Maintenance Employment Rate -->
+                <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                    <div class="w-10 h-10 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold mb-3 border border-indigo-100 dark:border-indigo-900">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-900 dark:text-white text-base mb-1">유지취업률 (Employment Quality)</h4>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">취업 후 11개월 이상 고용 상태를 유지하는 비율</p>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-600 dark:text-slate-300">일반대학 공학</span>
+                            <span class="font-bold text-blue-600 dark:text-blue-400">86.2%</span>
+                        </div>
+                        <div class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+                            <div class="bg-blue-600 h-full rounded-full" style="width: 86.2%"></div>
+                        </div>
+                        <div class="flex justify-between items-center pt-1">
+                            <span class="text-slate-600 dark:text-slate-300">전문대학 공학</span>
+                            <span class="font-bold text-teal-600 dark:text-teal-400">77.5%</span>
+                        </div>
+                        <div class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+                            <div class="bg-teal-500 h-full rounded-full" style="width: 77.5%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Metric 2: Major Alignment Rate -->
+                <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                    <div class="w-10 h-10 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold mb-3 border border-emerald-100 dark:border-emerald-900">
+                        <i class="fa-solid fa-bullseye"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-900 dark:text-white text-base mb-1">전공 일치도 (Major Alignment)</h4>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">전공 지식을 실제 업무에 활용하는 비율</p>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-600 dark:text-slate-300">일반대학 공학</span>
+                            <span class="font-bold text-blue-600 dark:text-blue-400">81.4%</span>
+                        </div>
+                        <div class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+                            <div class="bg-blue-600 h-full rounded-full" style="width: 81.4%"></div>
+                        </div>
+                        <div class="flex justify-between items-center pt-1">
+                            <span class="text-slate-600 dark:text-slate-300">전문대학 공학</span>
+                            <span class="font-bold text-teal-600 dark:text-teal-400">79.8%</span>
+                        </div>
+                        <div class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+                            <div class="bg-teal-500 h-full rounded-full" style="width: 79.8%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Metric 3: Time to Initial Employment -->
+                <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                    <div class="w-10 h-10 rounded-lg bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold mb-3 border border-amber-100 dark:border-amber-900">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-900 dark:text-white text-base mb-1">입직 속도 (Immediate Hire)</h4>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">졸업 후 3개월 이내 취업 성공 비율</p>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-600 dark:text-slate-300">전문대학 공학</span>
+                            <span class="font-bold text-teal-600 dark:text-teal-400">68.5% (빠름)</span>
+                        </div>
+                        <div class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+                            <div class="bg-teal-500 h-full rounded-full" style="width: 68.5%"></div>
+                        </div>
+                        <div class="flex justify-between items-center pt-1">
+                            <span class="text-slate-600 dark:text-slate-300">일반대학 공학</span>
+                            <span class="font-bold text-blue-600 dark:text-blue-400">59.2% (준비기간 소요)</span>
+                        </div>
+                        <div class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+                            <div class="bg-blue-600 h-full rounded-full" style="width: 59.2%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Major Field Explorer & Filterable Data Table -->
+    <section id="majors" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-10">
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mb-3">
+                <i class="fa-solid fa-magnifying-glass text-blue-600 mr-2"></i>공학 세부 분야별 탐색 & 데이터
+            </h2>
+            <p class="text-slate-600 dark:text-slate-400 text-sm sm:text-base">
+                원하는 공학 분야를 검색하거나 필터링하여 전문대 및 일반대의 취업 특성을 확인하세요.
+            </p>
+        </div>
+
+        <!-- Search & Filter Controls -->
+        <div class="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 mb-6">
+            <div class="flex flex-col md:flex-row gap-4 justify-between items-center">
+                <!-- Search Input -->
+                <div class="relative w-full md:w-1/2">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400"></i>
+                    <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="전공명 또는 키워드 검색 (예: 컴퓨터, AI, 자동차, 전기...)"
+                           class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                </div>
+
+                <!-- Category Pills -->
+                <div class="flex flex-wrap gap-2 w-full md:w-auto">
+                    <button onclick="filterCategory('all', event)" class="cat-btn active bg-slate-900 dark:bg-blue-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold">전체 보기</button>
+                    <button onclick="filterCategory('IT/SW', event)" class="cat-btn bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 px-3 py-1.5 rounded-lg text-xs font-semibold">IT·소프트웨어</button>
+                    <button onclick="filterCategory('전기전자', event)" class="cat-btn bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 px-3 py-1.5 rounded-lg text-xs font-semibold">전기·전자</button>
+                    <button onclick="filterCategory('기계모빌리티', event)" class="cat-btn bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 px-3 py-1.5 rounded-lg text-xs font-semibold">기계·모빌리티</button>
+                    <button onclick="filterCategory('화학소재', event)" class="cat-btn bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 px-3 py-1.5 rounded-lg text-xs font-semibold">화학·소재·바이오</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Major Data Table -->
+        <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left border-collapse" id="majorTable">
+                    <thead class="bg-slate-900 dark:bg-slate-950 text-white font-semibold">
+                        <tr>
+                            <th class="p-4">세부 분야</th>
+                            <th class="p-4">카테고리</th>
+                            <th class="p-4">전문대 취업률</th>
+                            <th class="p-4">일반대 취업률</th>
+                            <th class="p-4">대표 진출 직무 및 특징</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200 dark:divide-slate-800 text-slate-700 dark:text-slate-300">
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors" data-cat="IT/SW">
+                            <td class="p-4 font-bold text-slate-900 dark:text-white">컴퓨터·소프트웨어공학</td>
+                            <td class="p-4"><span class="bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-300 text-xs px-2.5 py-1 rounded-md font-medium">IT/SW</span></td>
+                            <td class="p-4 font-semibold text-teal-600 dark:text-teal-400">76.5%</td>
+                            <td class="p-4 font-semibold text-blue-600 dark:text-blue-400">73.8%</td>
+                            <td class="p-4 text-xs text-slate-600 dark:text-slate-400">웹/앱 풀스택 개발자, 백엔드 엔지니어, SI/SM 운영업무</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors" data-cat="IT/SW">
+                            <td class="p-4 font-bold text-slate-900 dark:text-white">인공지능·빅데이터공학</td>
+                            <td class="p-4"><span class="bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-300 text-xs px-2.5 py-1 rounded-md font-medium">IT/SW</span></td>
+                            <td class="p-4 font-semibold text-teal-600 dark:text-teal-400">71.2%</td>
+                            <td class="p-4 font-semibold text-blue-600 dark:text-blue-400">75.4%</td>
+                            <td class="p-4 text-xs text-slate-600 dark:text-slate-400">AI 모델링, 데이터 엔지니어, 머신러닝 개발, 머신비전 솔루션</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors" data-cat="전기전자">
+                            <td class="p-4 font-bold text-slate-900 dark:text-white">전기공학 & 제어 계측</td>
+                            <td class="p-4"><span class="bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 text-xs px-2.5 py-1 rounded-md font-medium">전기전자</span></td>
+                            <td class="p-4 font-semibold text-teal-600 dark:text-teal-400">75.8%</td>
+                            <td class="p-4 font-semibold text-blue-600 dark:text-blue-400">72.1%</td>
+                            <td class="p-4 text-xs text-slate-600 dark:text-slate-400">전력 설비 유지보수, 자동화 제어(PLC), 공기업 전기직, 시공 감독</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors" data-cat="전기전자">
+                            <td class="p-4 font-bold text-slate-900 dark:text-white">반도체 & 전자공학</td>
+                            <td class="p-4"><span class="bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 text-xs px-2.5 py-1 rounded-md font-medium">전기전자</span></td>
+                            <td class="p-4 font-semibold text-teal-600 dark:text-teal-400">74.2%</td>
+                            <td class="p-4 font-semibold text-blue-600 dark:text-blue-400">76.9%</td>
+                            <td class="p-4 text-xs text-slate-600 dark:text-slate-400">반도체 공정 엔지니어, 메인터넌스 기술자, 회로 설계, 디스플레이 R&D</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors" data-cat="기계모빌리티">
+                            <td class="p-4 font-bold text-slate-900 dark:text-white">기계공학 & 로봇공학</td>
+                            <td class="p-4"><span class="bg-purple-100 dark:bg-purple-950 text-purple-800 dark:text-purple-300 text-xs px-2.5 py-1 rounded-md font-medium">기계모빌리티</span></td>
+                            <td class="p-4 font-semibold text-teal-600 dark:text-teal-400">73.6%</td>
+                            <td class="p-4 font-semibold text-blue-600 dark:text-blue-400">71.5%</td>
+                            <td class="p-4 text-xs text-slate-600 dark:text-slate-400">CAD/CAM 3D 설계, 스마트 팩토리 제어, 로봇 모듈 유지보수, 품질관리</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors" data-cat="기계모빌리티">
+                            <td class="p-4 font-bold text-slate-900 dark:text-white">미래 모빌리티 & 자동차</td>
+                            <td class="p-4"><span class="bg-purple-100 dark:bg-purple-950 text-purple-800 dark:text-purple-300 text-xs px-2.5 py-1 rounded-md font-medium">기계모빌리티</span></td>
+                            <td class="p-4 font-semibold text-teal-600 dark:text-teal-400">72.0%</td>
+                            <td class="p-4 font-semibold text-blue-600 dark:text-blue-400">74.1%</td>
+                            <td class="p-4 text-xs text-slate-600 dark:text-slate-400">전기차 배터리 패키징, 자율주행 센서 모듈, 자동차 부품 진단 엔지니어</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors" data-cat="화학소재">
+                            <td class="p-4 font-bold text-slate-900 dark:text-white">화학공학 & 신소재</td>
+                            <td class="p-4"><span class="bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-xs px-2.5 py-1 rounded-md font-medium">화학소재</span></td>
+                            <td class="p-4 font-semibold text-teal-600 dark:text-teal-400">69.8%</td>
+                            <td class="p-4 font-semibold text-blue-600 dark:text-blue-400">73.5%</td>
+                            <td class="p-4 text-xs text-slate-600 dark:text-slate-400">석유화학 플랜트 오퍼레이터, 이차전지 소재 연구, 분석 시험기사</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors" data-cat="IT/SW">
+                            <td class="p-4 font-bold text-slate-900 dark:text-white">정보보안 & 사이버보안</td>
+                            <td class="p-4"><span class="bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-300 text-xs px-2.5 py-1 rounded-md font-medium">IT/SW</span></td>
+                            <td class="p-4 font-semibold text-teal-600 dark:text-teal-400">70.5%</td>
+                            <td class="p-4 font-semibold text-blue-600 dark:text-blue-400">74.0%</td>
+                            <td class="p-4 text-xs text-slate-600 dark:text-slate-400">보안관제 엔지니어, 취약점 점검 컨설턴트, 모의해킹, 네트워크 침입 방지</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Advanced Pathways & Educational Bridge -->
+    <section id="pathways" class="py-16 bg-slate-900 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <span class="text-xs font-bold text-sky-400 bg-sky-950 px-3 py-1 rounded-full border border-sky-800">Bridging Pathways</span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold mt-2 mb-3">
+                    <i class="fa-solid fa-route text-sky-400 mr-2"></i>전문대 ➔ 4년제 학사 연결 트랙
+                </h2>
+                <p class="text-slate-400 text-sm sm:text-base">
+                    전문대학에 입학하더라도 4년제 학위 및 대학원 진학까지 이어질 수 있는 유연한 연계 제도가 마련되어 있습니다.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Track 1: 학사학위 전공심화과정 -->
+                <div class="bg-slate-800/90 border border-slate-700 p-6 rounded-2xl relative overflow-hidden group hover:border-sky-500 transition-all">
+                    <div class="w-12 h-12 bg-sky-500/20 text-sky-400 rounded-xl flex items-center justify-center text-xl font-bold mb-4 border border-sky-500/30">
+                        01
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">학사학위 전공심화 과정</h3>
+                    <p class="text-xs text-sky-300 font-semibold mb-3">동일 대학에서 1~2년 추가 수강</p>
+                    <p class="text-xs text-slate-300 leading-relaxed mb-4">
+                        전문대 졸업 후 편입 시험 없이 같은 대학에서 1~2년 추가 학업을 통해 교육부 장관 명의 4년제 정규 학사 학위를 취득할 수 있는 가장 안정적인 트랙입니다.
+                    </p>
+                    <div class="text-[11px] bg-slate-900/80 p-3 rounded-lg border border-slate-700 text-slate-300">
+                        ✅ <strong>장점:</strong> 수능/편입 시험 부담 제로, 야간/주말반 운영으로 직장 병행 가능
+                    </div>
+                </div>
+
+                <!-- Track 2: 일반/학사 편입 -->
+                <div class="bg-slate-800/90 border border-slate-700 p-6 rounded-2xl relative overflow-hidden group hover:border-blue-500 transition-all">
+                    <div class="w-12 h-12 bg-blue-500/20 text-blue-400 rounded-xl flex items-center justify-center text-xl font-bold mb-4 border border-blue-500/30">
+                        02
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">일반대학 3학년 편입</h3>
+                    <p class="text-xs text-blue-300 font-semibold mb-3">4년제 대학으로 교성 점프</p>
+                    <p class="text-xs text-slate-300 leading-relaxed mb-4">
+                        전문대 졸업 학점을 바탕으로 주요 국립/사립대 공과대학 3학년으로 편입학하는 경로입니다. 일반 편입 또는 학사 편입 선택이 가능합니다.
+                    </p>
+                    <div class="text-[11px] bg-slate-900/80 p-3 rounded-lg border border-slate-700 text-slate-300">
+                        ✅ <strong>장점:</strong> 대학 간판(네임밸류) 업그레이드, 연구중심 대학 환경 경험
+                    </div>
+                </div>
+
+                <!-- Track 3: 계약학과 및 일-학습 병행 -->
+                <div class="bg-slate-800/90 border border-slate-700 p-6 rounded-2xl relative overflow-hidden group hover:border-teal-500 transition-all">
+                    <div class="w-12 h-12 bg-teal-500/20 text-teal-400 rounded-xl flex items-center justify-center text-xl font-bold mb-4 border border-teal-500/30">
+                        03
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">계약학과 & 산업체 위탁</h3>
+                    <p class="text-xs text-teal-300 font-semibold mb-3">취업 확약 + 학업 동시 달성</p>
+                    <p class="text-xs text-slate-300 leading-relaxed mb-4">
+                        기업체와 대학이 협약을 맺고 학비 지원 및 입사 혜택을 제공하는 과정입니다. 낮에는 회사 근무, 밤에는 수강하는 주경야독형 모델이 많습니다.
+                    </p>
+                    <div class="text-[11px] bg-slate-900/80 p-3 rounded-lg border border-slate-700 text-slate-300">
+                        ✅ <strong>장점:</strong> 등록금 전액/일부 지원, 졸업 후 지정 기업 취업 보장
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: Interactive Career Quiz Wizard -->
+    <section id="quiz" class="py-16 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-10 shadow-xl border border-slate-200 dark:border-slate-800">
+            <div class="text-center mb-8">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 mb-2 border border-blue-200 dark:border-blue-800">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> AI 진로 매칭 퀴즈
+                </span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">
+                    나에게 맞는 대학 유형은? (1분 진단)
+                </h2>
+                <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-2">
+                    아래 4가지 질문에 답변하시면 학습 스타일에 최적화된 추천 진로를 안내해 드립니다.
+                </p>
+            </div>
+
+            <form id="quizForm" class="space-y-6">
+                <!-- Question 1 -->
+                <div class="bg-slate-50 dark:bg-slate-800/60 p-5 rounded-2xl border border-slate-200 dark:border-slate-700">
+                    <label class="block font-bold text-slate-800 dark:text-slate-100 text-sm sm:text-base mb-3">
+                        Q1. 나의 가장 최우선 학업 목표는 무엇인가요?
+                    </label>
+                    <div class="grid sm:grid-cols-2 gap-3">
+                        <label class="flex items-center p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 cursor-pointer hover:border-blue-500 dark:hover:border-blue-400 transition-colors">
+                            <input type="radio" name="q1" value="junior" class="w-4 h-4 text-blue-600" required>
+                            <span class="ml-2.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300">빠르게 기술을 배워 2~3년 내 사회에 진출</span>
+                        </label>
+                        <label class="flex items-center p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 cursor-pointer hover:border-blue-500 dark:hover:border-blue-400 transition-colors">
+                            <input type="radio" name="q1" value="univ" class="w-4 h-4 text-blue-600">
+                            <span class="ml-2.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300">이론적 원리를 깊이 있게 탐구하여 R&D 연구원 지향</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="bg-slate-50 dark:bg-slate-800/60 p-5 rounded-2xl border border-slate-200 dark:border-slate-700">
+                    <label class="block font-bold text-slate-800 dark:text-slate-100 text-sm sm:text-base mb-3">
+                        Q2. 선호하는 수업 스타일은 어떤 형태인가요?
+                    </label>
+                    <div class="grid sm:grid-cols-2 gap-3">
+                        <label class="flex items-center p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 cursor-pointer hover:border-blue-500 dark:hover:border-blue-400 transition-colors">
+                            <input type="radio" name="q2" value="junior" class="w-4 h-4 text-blue-600" required>
+                            <span class="ml-2.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300">실기, 코딩 실습, 국가자격증 실습 중심</span>
+                        </label>
+                        <label class="flex items-center p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 cursor-pointer hover:border-blue-500 dark:hover:border-blue-400 transition-colors">
+                            <input type="radio" name="q2" value="univ" class="w-4 h-4 text-blue-600">
+                            <span class="ml-2.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300">공학수학, 물리 원리, 이론적 설계 프로젝트 중심</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="bg-slate-50 dark:bg-slate-800/60 p-5 rounded-2xl border border-slate-200 dark:border-slate-700">
+                    <label class="block font-bold text-slate-800 dark:text-slate-100 text-sm sm:text-base mb-3">
+                        Q3. 향후 대학원 진학(석·박사)이나 공공기관 연구원 의향이 있나요?
+                    </label>
+                    <div class="grid sm:grid-cols-2 gap-3">
+                        <label class="flex items-center p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 cursor-pointer hover:border-blue-500 dark:hover:border-blue-400 transition-colors">
+                            <input type="radio" name="q3" value="junior" class="w-4 h-4 text-blue-600" required>
+                            <span class="ml-2.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300">없음 또는 직장 근무 후 필요하면 고민</span>
+                        </label>
+                        <label class="flex items-center p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 cursor-pointer hover:border-blue-500 dark:hover:border-blue-400 transition-colors">
+                            <input type="radio" name="q3" value="univ" class="w-4 h-4 text-blue-600">
+                            <span class="ml-2.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300">명확히 대학원 진학 및 연구직 목표</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="bg-slate-50 dark:bg-slate-800/60 p-5 rounded-2xl border border-slate-200 dark:border-slate-700">
+                    <label class="block font-bold text-slate-800 dark:text-slate-100 text-sm sm:text-base mb-3">
+                        Q4. 등록금 비용 부담 및 학업 투자 기간에 대한 생각은?
+                    </label>
+                    <div class="grid sm:grid-cols-2 gap-3">
+                        <label class="flex items-center p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 cursor-pointer hover:border-blue-500 dark:hover:border-blue-400 transition-colors">
+                            <input type="radio" name="q4" value="junior" class="w-4 h-4 text-blue-600" required>
+                            <span class="ml-2.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300">비용과 시간을 최소화하여 경제적 자립 우선</span>
+                        </label>
+                        <label class="flex items-center p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 cursor-pointer hover:border-blue-500 dark:hover:border-blue-400 transition-colors">
+                            <input type="radio" name="q4" value="univ" class="w-4 h-4 text-blue-600">
+                            <span class="ml-2.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300">4년의 학업 기간과 등록금을 투자할 가치가 충분함</span>
+                        </label>
+                    </div>
+                </div>
+
+                <button type="button" onclick="calculateResult()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl shadow-lg transition-all text-base flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-calculator"></i> 추천 진로 결과 확인하기
+                </button>
+            </form>
+
+            <!-- Quiz Result Modal / Box -->
+            <div id="quizResult" class="hidden mt-8 p-6 rounded-2xl border-2 transition-all">
+                <div class="flex items-center gap-3 mb-3">
+                    <div id="resultIcon" class="w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bold"></div>
+                    <div>
+                        <h3 id="resultTitle" class="text-xl font-bold text-slate-900 dark:text-white"></h3>
+                        <p id="resultSubtitle" class="text-xs text-slate-500 dark:text-slate-400"></p>
+                    </div>
+                </div>
+                <p id="resultDescription" class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed mb-4"></p>
+                <div id="resultTips" class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 text-xs text-slate-600 dark:text-slate-300"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-10 border-t border-slate-800 text-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-3">
+            <div class="flex justify-center items-center gap-2 text-white font-bold text-base">
+                <i class="fa-solid fa-graduation-cap text-blue-500"></i> 공학계열 진로 & 취업률 안내 포털
+            </div>
+            <p>본 자료는 교육부 및 한국교육개발원(KEDI) 고등교육기관 졸업자 취업통계 조사를 바탕으로 재구성되었습니다.</p>
+            <p>© 2026 Engineering Career LAB. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Dark Mode Toggle Logic
+        function toggleTheme() {
+            const html = document.documentElement;
+            const themeIcon = document.getElementById('themeIcon');
+            const themeText = document.getElementById('themeText');
+            
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                themeIcon.className = 'fa-solid fa-moon text-amber-400';
+                themeText.innerText = '다크 모드';
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                themeIcon.className = 'fa-solid fa-sun text-amber-400';
+                themeText.innerText = '라이트 모드';
+                localStorage.setItem('theme', 'dark');
+            }
+            updateChartTheme();
+        }
+
+        // Initialize Theme from localStorage
+        (function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const html = document.documentElement;
+            const themeIcon = document.getElementById('themeIcon');
+            const themeText = document.getElementById('themeText');
+            
+            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                html.classList.add('dark');
+                if (themeIcon) themeIcon.className = 'fa-solid fa-sun text-amber-400';
+                if (themeText) themeText.innerText = '라이트 모드';
+            } else {
+                html.classList.remove('dark');
+                if (themeIcon) themeIcon.className = 'fa-solid fa-moon text-amber-400';
+                if (themeText) themeText.innerText = '다크 모드';
+            }
+        })();
+
+        let chart1, chart2;
+
+        function updateChartTheme() {
+            const isDark = document.documentElement.classList.contains('dark');
+            const textColor = isDark ? '#cbd5e1' : '#475569';
+            const gridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)';
+
+            [chart1, chart2].forEach(chart => {
+                if (chart) {
+                    chart.options.scales.x.ticks.color = textColor;
+                    chart.options.scales.y.ticks.color = textColor;
+                    chart.options.scales.x.grid.color = gridColor;
+                    chart.options.scales.y.grid.color = gridColor;
+                    chart.options.plugins.legend.labels.color = textColor;
+                    chart.update();
+                }
+            });
+        }
+
+        // Chart 1: 계열별 취업률 비교 (Overall Field Chart)
+        const ctx1 = document.getElementById('overallFieldChart').getContext('2d');
+        chart1 = new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                labels: ['공학계열', '의약계열', '예체능계열', '인문계열', '사회계열', '자연계열'],
+                datasets: [
+                    {
+                        label: '전문대학 (%)',
+                        data: [72.8, 82.1, 64.5, 61.2, 65.8, 64.1],
+                        backgroundColor: '#14b8a6',
+                        borderRadius: 6
+                    },
+                    {
+                        label: '일반대학 (%)',
+                        data: [70.4, 82.5, 65.1, 57.2, 62.9, 62.2],
+                        backgroundColor: '#2563eb',
+                        borderRadius: 6
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom' }
+                },
+                scales: {
+                    x: { grid: { display: false } },
+                    y: { min: 50, max: 90 }
+                }
+            }
+        });
+
+        // Chart 2: 공학 세부 전공별 취업률 (Engineering Sub disciplines Chart)
+        const ctx2 = document.getElementById('engineeringSubChart').getContext('2d');
+        chart2 = new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: ['컴퓨터·SW', '전기·전자', '기계·모빌리티', '화학·소재', '산업·건축'],
+                datasets: [
+                    {
+                        label: '전문대학 (%)',
+                        data: [76.5, 75.0, 73.6, 69.8, 70.2],
+                        backgroundColor: '#0d9488',
+                        borderRadius: 6
+                    },
+                    {
+                        label: '일반대학 (%)',
+                        data: [73.8, 74.5, 71.5, 73.5, 68.9],
+                        backgroundColor: '#1d4ed8',
+                        borderRadius: 6
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom' }
+                },
+                scales: {
+                    x: { grid: { display: false } },
+                    y: { min: 60, max: 85 }
+                }
+            }
+        });
+
+        // Initialize Chart Colors based on theme
+        updateChartTheme();
+
+        // Table Filter Functions
+        function filterTable() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const rows = document.querySelectorAll('#majorTable tbody tr');
+
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                if (text.includes(input)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        function filterCategory(cat, event) {
+            const rows = document.querySelectorAll('#majorTable tbody tr');
+            const btns = document.querySelectorAll('.cat-btn');
+
+            btns.forEach(btn => {
+                btn.classList.remove('bg-slate-900', 'dark:bg-blue-600', 'text-white');
+                btn.classList.add('bg-slate-100', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-300');
+            });
+            if (event && event.target) {
+                event.target.classList.remove('bg-slate-100', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-300');
+                event.target.classList.add('bg-slate-900', 'dark:bg-blue-600', 'text-white');
+            }
+
+            rows.forEach(row => {
+                if (cat === 'all' || row.dataset.cat === cat) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        // Quiz Logic
+        function calculateResult() {
+            const form = document.getElementById('quizForm');
+            const q1 = form.elements['q1'] ? form.elements['q1'].value : null;
+            const q2 = form.elements['q2'] ? form.elements['q2'].value : null;
+            const q3 = form.elements['q3'] ? form.elements['q3'].value : null;
+            const q4 = form.elements['q4'] ? form.elements['q4'].value : null;
+
+            if (!q1 || !q2 || !q3 || !q4) {
+                alert('모든 질문에 답해 주세요!');
+                return;
+            }
+
+            let juniorCount = 0;
+            let univCount = 0;
+
+            [q1, q2, q3, q4].forEach(val => {
+                if (val === 'junior') juniorCount++;
+                if (val === 'univ') univCount++;
+            });
+
+            const resultBox = document.getElementById('quizResult');
+            const icon = document.getElementById('resultIcon');
+            const title = document.getElementById('resultTitle');
+            const subtitle = document.getElementById('resultSubtitle');
+            const desc = document.getElementById('resultDescription');
+            const tips = document.getElementById('resultTips');
+
+            resultBox.classList.remove('hidden');
+
+            if (juniorCount >= 3) {
+                resultBox.className = "mt-8 p-6 rounded-2xl border-2 border-teal-300 dark:border-teal-800 bg-teal-50/50 dark:bg-teal-950/40";
+                icon.className = "w-12 h-12 rounded-xl bg-teal-500 text-white flex items-center justify-center text-xl font-bold";
+                icon.innerHTML = '<i class="fa-solid fa-wrench"></i>';
+                title.innerText = "추천 경로: 전문대학 (2~3년제 실무 트랙)";
+                subtitle.innerText = "빠른 직무 습득과 효율적인 사회 진출에 최적화";
+                desc.innerText = "귀하는 장기적인 이론 공부보다는 현장 중심의 실무 기술을 조기에 습득하여 경제적 자립과 신속한 취업을 선호하는 경향이 뚜렷합니다. 전문대학 공학계열(특히 3년제 SW/IT학과) 입학이 매우 매력적인 선택지입니다.";
+                tips.innerHTML = "💡 <strong>추천 가이드:</strong> 학업 후 학위 업그레이드가 필요할 경우, 편입 대신 '학사학위 전공심화 과정'을 이용하면 일과 학무를 모두 잡을 수 있습니다.";
+            } else if (univCount >= 3) {
+                resultBox.className = "mt-8 p-6 rounded-2xl border-2 border-blue-300 dark:border-blue-800 bg-blue-50/50 dark:bg-blue-950/40";
+                icon.className = "w-12 h-12 rounded-xl bg-blue-600 text-white flex items-center justify-center text-xl font-bold";
+                icon.innerHTML = '<i class="fa-solid fa-microscope"></i>';
+                title.innerText = "추천 경로: 일반대학교 (4년제 공과대학)";
+                subtitle.innerText = "심화 이론 학습 및 R&D 연구직 트랙에 최적화";
+                desc.innerText = "귀하는 공학 기초 이론과 원리를 체계적으로 정립하여 대기업, 연구소, 공공기관 엔지니어나 석·박사 진학을 도모하는 학습 패턴과 일치합니다. 4년제 정규 공과대학 과정을 추천합니다.";
+                tips.innerHTML = "💡 <strong>추천 가이드:</strong> 3~4학년 캡스톤 디자인 및 기업 연계 산학 프로젝트에 적극 참여하여 실무 포트폴리오를 구체화하세요.";
+            } else {
+                resultBox.className = "mt-8 p-6 rounded-2xl border-2 border-indigo-300 dark:border-indigo-800 bg-indigo-50/50 dark:bg-indigo-950/40";
+                icon.className = "w-12 h-12 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-xl font-bold";
+                icon.innerHTML = '<i class="fa-solid fa-route"></i>';
+                title.innerText = "추천 경로: 하이브리드 연계 트랙 (전공심화 / 계약학과)";
+                subtitle.innerText = "실무와 학위 두 마리 토끼를 모두 잡는 전략적 선택";
+                desc.innerText = "귀하는 실무 능력과 4년제 학사의 이점을 동시에 고려하고 계십니다. 2~3년제 전문대 졸업 후 '학사학위 전공심화'나 '계약학과'로 연결하거나 4년제 대학 편입을 결합하는 전략을 권장합니다.";
+                tips.innerHTML = "💡 <strong>추천 가이드:</strong> 계약학과 또는 산학협력 우수 대학의 유연한 학제 프로그램을 우선적으로 살펴보고 지망하세요.";
+            }
+
+            resultBox.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
