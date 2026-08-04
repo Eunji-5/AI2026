@@ -13,3 +13,4 @@
 ### storybook2 
 + 스토리북 AI -기술에 온기를 불어넣는 이야기
 ---
+![농담곰 우쭐](https://i.imgur.com/fbv8LPd.png)
