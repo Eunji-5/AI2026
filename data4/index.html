@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko" class="dark">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +12,9 @@
     <!-- Google Fonts Inter & Outfit -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;900&display=swap"
+        rel="stylesheet">
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -46,49 +49,64 @@
             background-color: #0b0f19;
             color: #f3f4f6;
         }
-        .font-display { font-family: 'Outfit', sans-serif; }
+
+        .font-display {
+            font-family: 'Outfit', sans-serif;
+        }
+
         .glass-panel {
             background: rgba(30, 41, 59, 0.7);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
+
         .glass-card {
             background: rgba(15, 23, 42, 0.6);
             backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.08);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
         .glass-card:hover {
             border-color: rgba(99, 102, 241, 0.4);
             transform: translateY(-4px);
             box-shadow: 0 12px 30px -5px rgba(99, 102, 241, 0.2);
         }
+
         .gradient-text {
             background: linear-gradient(135deg, #818cf8 0%, #ec4899 50%, #06b6d4 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
         .glow-btn {
             box-shadow: 0 0 25px rgba(99, 102, 241, 0.4);
             transition: all 0.3s ease;
         }
+
         .glow-btn:hover {
             box-shadow: 0 0 35px rgba(236, 72, 153, 0.6);
             transform: scale(1.02);
         }
     </style>
 </head>
+
 <body class="min-h-screen flex flex-col justify-between selection:bg-brand-500 selection:text-white">
 
     <!-- Navigation Bar -->
     <header class="sticky top-0 z-50 glass-panel border-b border-slate-800">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;" class="flex items-center space-x-3 group cursor-pointer">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 via-brand-accent to-brand-neon flex items-center justify-center shadow-lg shadow-brand-500/30 group-hover:scale-105 transition transform">
-                    <i class="fa-solid fa-compact-disc text-white text-xl animate-spin" style="animation-duration: 8s;"></i>
+            <a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;"
+                class="flex items-center space-x-3 group cursor-pointer">
+                <div
+                    class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 via-brand-accent to-brand-neon flex items-center justify-center shadow-lg shadow-brand-500/30 group-hover:scale-105 transition transform">
+                    <i class="fa-solid fa-compact-disc text-white text-xl animate-spin"
+                        style="animation-duration: 8s;"></i>
                 </div>
                 <div>
-                    <h1 class="font-display font-bold text-lg text-white leading-tight group-hover:text-brand-400 transition">Festival 01</h1>
+                    <h1
+                        class="font-display font-bold text-lg text-white leading-tight group-hover:text-brand-400 transition">
+                        Festival 01</h1>
                     <p class="text-xs text-slate-400">웹사이트 소개 가이드</p>
                 </div>
             </a>
@@ -96,15 +114,15 @@
             <!-- Action Buttons Area -->
             <div class="flex items-center space-x-2 sm:space-x-3">
                 <!-- Home Button -->
-                <a href="../index.html" 
-                   class="px-3.5 py-2 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-200 hover:text-white text-xs sm:text-sm font-semibold border border-slate-700/80 transition flex items-center gap-2 shadow-sm">
+                <a href="../index.html"
+                    class="px-3.5 py-2 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-200 hover:text-white text-xs sm:text-sm font-semibold border border-slate-700/80 transition flex items-center gap-2 shadow-sm">
                     <i class="fa-solid fa-house text-brand-400"></i>
                     <span>홈</span>
                 </a>
 
                 <!-- Direct Link Button in Header -->
-                <a href="https://festival01-five.vercel.app/" target="_blank" rel="noopener noreferrer" 
-                   class="px-4 py-2 rounded-xl bg-gradient-to-r from-brand-600 via-brand-500 to-brand-accent hover:opacity-95 text-xs sm:text-sm font-bold text-white shadow-lg shadow-brand-500/25 flex items-center gap-2 transition">
+                <a href="https://festival01-five.vercel.app/" target="_blank" rel="noopener noreferrer"
+                    class="px-4 py-2 rounded-xl bg-gradient-to-r from-brand-600 via-brand-500 to-brand-accent hover:opacity-95 text-xs sm:text-sm font-bold text-white shadow-lg shadow-brand-500/25 flex items-center gap-2 transition">
                     <span>사이트 바로가기</span>
                     <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
                 </a>
@@ -116,13 +134,18 @@
     <main class="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
 
         <!-- Hero Intro Section -->
-        <section class="relative rounded-3xl glass-panel p-8 sm:p-12 border border-slate-700/60 overflow-hidden shadow-2xl">
+        <section
+            class="relative rounded-3xl glass-panel p-8 sm:p-12 border border-slate-700/60 overflow-hidden shadow-2xl">
             <!-- Background Glow Effects -->
-            <div class="absolute -top-20 -right-20 w-80 h-80 bg-brand-500/20 rounded-full blur-3xl pointer-events-none"></div>
-            <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-brand-accent/20 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -top-20 -right-20 w-80 h-80 bg-brand-500/20 rounded-full blur-3xl pointer-events-none">
+            </div>
+            <div
+                class="absolute -bottom-20 -left-20 w-80 h-80 bg-brand-accent/20 rounded-full blur-3xl pointer-events-none">
+            </div>
 
             <div class="relative z-10 text-center max-w-3xl mx-auto space-y-6">
-                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/30 text-brand-400 text-xs font-semibold">
+                <div
+                    class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/30 text-brand-400 text-xs font-semibold">
                     <i class="fa-solid fa-sparkles"></i> 뮤직 페스티벌 웹 플랫폼 소개
                 </div>
 
@@ -131,13 +154,14 @@
                 </h2>
 
                 <p class="text-slate-300 text-base sm:text-lg leading-relaxed">
-                    <strong class="text-white">Festival 01</strong>은 음악과 라이브 공연의 생생한 현장감을 전하고, 라인업 정보부터 티켓 예매까지 한눈에 확인할 수 있도록 제작된 라이브 페스티벌 웹 플랫폼입니다.
+                    <strong class="text-white">Festival 01</strong>은 음악과 라이브 공연의 생생한 현장감을 전하고, 라인업 정보부터 티켓 예매까지 한눈에 확인할
+                    수 있도록 제작된 라이브 페스티벌 웹 플랫폼입니다.
                 </p>
 
                 <!-- Primary Call To Action Button -->
                 <div class="pt-4 flex justify-center">
-                    <a href="https://festival01-five.vercel.app/" target="_blank" rel="noopener noreferrer" 
-                       class="glow-btn px-8 py-4 rounded-2xl bg-gradient-to-r from-brand-600 via-brand-accent to-brand-neon text-white font-bold text-base sm:text-lg flex items-center gap-3 group">
+                    <a href="https://festival01-five.vercel.app/" target="_blank" rel="noopener noreferrer"
+                        class="glow-btn px-8 py-4 rounded-2xl bg-gradient-to-r from-brand-600 via-brand-accent to-brand-neon text-white font-bold text-base sm:text-lg flex items-center gap-3 group">
                         <i class="fa-solid fa-globe text-xl group-hover:rotate-12 transition transform"></i>
                         <span>Festival 01 웹사이트 들어가기</span>
                         <i class="fa-solid fa-arrow-right text-sm group-hover:translate-x-1 transition transform"></i>
@@ -145,7 +169,8 @@
                 </div>
 
                 <div class="pt-2">
-                    <span class="text-xs text-slate-400 font-mono bg-slate-900/80 px-3 py-1 rounded-full border border-slate-800">
+                    <span
+                        class="text-xs text-slate-400 font-mono bg-slate-900/80 px-3 py-1 rounded-full border border-slate-800">
                         연결 주소: https://festival01-five.vercel.app/
                     </span>
                 </div>
@@ -162,7 +187,8 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <!-- Overview Card 1 -->
                 <div class="glass-card p-6 rounded-2xl space-y-3">
-                    <div class="w-12 h-12 rounded-xl bg-brand-500/20 text-brand-400 flex items-center justify-center text-xl font-bold border border-brand-500/30">
+                    <div
+                        class="w-12 h-12 rounded-xl bg-brand-500/20 text-brand-400 flex items-center justify-center text-xl font-bold border border-brand-500/30">
                         <i class="fa-solid fa-bullhorn"></i>
                     </div>
                     <h4 class="text-lg font-bold text-white">사이트 목적</h4>
@@ -173,7 +199,8 @@
 
                 <!-- Overview Card 2 -->
                 <div class="glass-card p-6 rounded-2xl space-y-3">
-                    <div class="w-12 h-12 rounded-xl bg-pink-500/20 text-pink-400 flex items-center justify-center text-xl font-bold border border-pink-500/30">
+                    <div
+                        class="w-12 h-12 rounded-xl bg-pink-500/20 text-pink-400 flex items-center justify-center text-xl font-bold border border-pink-500/30">
                         <i class="fa-solid fa-users"></i>
                     </div>
                     <h4 class="text-lg font-bold text-white">주요 타겟</h4>
@@ -184,7 +211,8 @@
 
                 <!-- Overview Card 3 -->
                 <div class="glass-card p-6 rounded-2xl space-y-3">
-                    <div class="w-12 h-12 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xl font-bold border border-cyan-500/30">
+                    <div
+                        class="w-12 h-12 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xl font-bold border border-cyan-500/30">
                         <i class="fa-solid fa-display"></i>
                     </div>
                     <h4 class="text-lg font-bold text-white">서비스 형태</h4>
@@ -205,7 +233,8 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Feature 1 -->
                 <div class="glass-card p-6 rounded-2xl flex gap-4">
-                    <div class="w-12 h-12 rounded-xl bg-indigo-500/20 text-indigo-400 shrink-0 flex items-center justify-center text-xl font-bold border border-indigo-500/30">
+                    <div
+                        class="w-12 h-12 rounded-xl bg-indigo-500/20 text-indigo-400 shrink-0 flex items-center justify-center text-xl font-bold border border-indigo-500/30">
                         <i class="fa-solid fa-user-ninja"></i>
                     </div>
                     <div class="space-y-1">
@@ -218,7 +247,8 @@
 
                 <!-- Feature 2 -->
                 <div class="glass-card p-6 rounded-2xl flex gap-4">
-                    <div class="w-12 h-12 rounded-xl bg-purple-500/20 text-purple-400 shrink-0 flex items-center justify-center text-xl font-bold border border-purple-500/30">
+                    <div
+                        class="w-12 h-12 rounded-xl bg-purple-500/20 text-purple-400 shrink-0 flex items-center justify-center text-xl font-bold border border-purple-500/30">
                         <i class="fa-solid fa-clock"></i>
                     </div>
                     <div class="space-y-1">
@@ -231,7 +261,8 @@
 
                 <!-- Feature 3 -->
                 <div class="glass-card p-6 rounded-2xl flex gap-4">
-                    <div class="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 shrink-0 flex items-center justify-center text-xl font-bold border border-emerald-500/30">
+                    <div
+                        class="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 shrink-0 flex items-center justify-center text-xl font-bold border border-emerald-500/30">
                         <i class="fa-solid fa-ticket"></i>
                     </div>
                     <div class="space-y-1">
@@ -244,7 +275,8 @@
 
                 <!-- Feature 4 -->
                 <div class="glass-card p-6 rounded-2xl flex gap-4">
-                    <div class="w-12 h-12 rounded-xl bg-cyan-500/20 text-cyan-400 shrink-0 flex items-center justify-center text-xl font-bold border border-cyan-500/30">
+                    <div
+                        class="w-12 h-12 rounded-xl bg-cyan-500/20 text-cyan-400 shrink-0 flex items-center justify-center text-xl font-bold border border-cyan-500/30">
                         <i class="fa-solid fa-wand-magic-sparkles"></i>
                     </div>
                     <div class="space-y-1">
@@ -264,8 +296,8 @@
                 아래 버튼을 누르면 공식 웹사이트로 바로 이동합니다.
             </p>
             <div class="flex justify-center pt-2">
-                <a href="https://festival01-five.vercel.app/" target="_blank" rel="noopener noreferrer" 
-                   class="glow-btn px-8 py-3.5 rounded-xl bg-gradient-to-r from-brand-600 to-brand-accent text-white font-bold text-base flex items-center gap-2.5">
+                <a href="https://festival01-five.vercel.app/" target="_blank" rel="noopener noreferrer"
+                    class="glow-btn px-8 py-3.5 rounded-xl bg-gradient-to-r from-brand-600 to-brand-accent text-white font-bold text-base flex items-center gap-2.5">
                     <span>사이트 들어가기</span>
                     <i class="fa-solid fa-arrow-up-right-from-square text-sm"></i>
                 </a>
@@ -276,8 +308,10 @@
 
     <!-- Footer -->
     <footer class="glass-panel border-t border-slate-800 mt-12 py-6 text-center text-xs text-slate-500">
-        <p>Festival 01 Intro & Overview Guide | Target URL: <a href="https://festival01-five.vercel.app/" target="_blank" class="text-brand-400 hover:underline">https://festival01-five.vercel.app/</a></p>
+        <p>Festival 01 Intro & Overview Guide | Target URL: <a href="https://festival01-five.vercel.app/"
+                target="_blank" class="text-brand-400 hover:underline">https://festival01-five.vercel.app/</a></p>
     </footer>
 
 </body>
+
 </html>
